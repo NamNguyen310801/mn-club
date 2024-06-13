@@ -1,11 +1,15 @@
-import { Event, Hero, Testimonials } from "./_components";
+import { Event, Footer, Header, Hero, Testimonials } from "./_components";
 
 export default function Home() {
   return (
-    <div className="container flex flex-col">
-      <Hero />
-      <Event />
-      <Testimonials />
-    </div>
+    <>
+      <Header />
+      <div className="container flex flex-col">
+        <Hero />
+        <Event />
+        <Testimonials />
+      </div>
+      <Footer />
+    </>
   );
 }

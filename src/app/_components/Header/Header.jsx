@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { NavLinkItem } from "@/components/_personal";
+import { AvatarDropdown, NavLinkItem } from "@/components/_personal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +13,12 @@ import {
 import { AlignJustify } from "lucide-react";
 import Link from "next/link";
 import { NavLinkList } from "@/app/_utils/data/data";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const pathname = usePathname();
+  const user = useSelector((state) => state.auth.userAuth);
+
   const showHeader =
     pathname === "/sign-in" || pathname === "/create-account" ? false : true;
   return (
@@ -24,11 +27,11 @@ export default function Header() {
         !showHeader && "hidden"
       } w-full flex items-start md:items-center px-3 md:px-6 xl:mx-auto 2xl:max-w-[1500px] py-2 md:py-5 border-b`}>
       <Image
-        src={"./next.svg"}
+        src={"/next.svg"}
         width={150}
         height={96}
         alt="logo"
-        className="h-12 md:h-20"
+        className="h-12 md:h-20 "
       />
       {/* responsive navigation mobile */}
       <DropdownMenu>
@@ -50,13 +53,23 @@ export default function Header() {
               />
             </DropdownMenuItem>
           ))}
-          <DropdownMenuItem className="flex gap-2 items-center cursor-pointer">
-            <NavLinkItem
-              pathname={pathname}
-              href={"contact-me"}
-              name={"Contact Me"}
-            />
-          </DropdownMenuItem>
+          {!user ? (
+            <DropdownMenuItem className="flex gap-2 items-center cursor-pointer">
+              <NavLinkItem
+                pathname={pathname}
+                href={"sign-in"}
+                name={"Login"}
+              />
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem className="flex gap-2 items-center cursor-pointer">
+              <NavLinkItem
+                pathname={pathname}
+                href={"user/user-profile"}
+                name={"Profile"}
+              />
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       {/* responsive navigation pc */}
@@ -74,9 +87,15 @@ export default function Header() {
             ))}
           </ul>
         </nav>
-        <Link href={"/contact-me"}>
-          <Button className="rounded-full ml-8 xl:py-6">Contact Me</Button>
-        </Link>
+        {user ? (
+          <div className="ml-8">
+            <AvatarDropdown user={user} />
+          </div>
+        ) : (
+          <Link href={"/sign-in"}>
+            <Button className="rounded-full ml-8 w-24 xl:py-6">Login</Button>
+          </Link>
+        )}
       </div>
     </header>
   );

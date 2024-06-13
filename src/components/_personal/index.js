@@ -1,3 +1,9 @@
 export { default as EventItem } from "./EventItem";
 export { default as NavLinkItem } from "./NavLinkItem";
 export { default as TestimonialsItem } from "./TestimonialsItem";
+export { default as SearchInput } from "./SearchInput";
+export { default as ButtonAdd } from "./ButtonAdd";
+export { default as Loading } from "./Loading";
+export { default as NotifyItem } from "./NotifyItem";
+export { default as AvatarDropdown } from "./AvatarDropdown";
+export { default as FormItem } from "./FormItem";

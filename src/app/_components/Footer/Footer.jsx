@@ -47,9 +47,6 @@ export default function Footer() {
                   <Link href={item?.href}>{item?.name}</Link>
                 </li>
               ))}
-              <li>
-                <Link href={"/contact-me"}>Contact Me</Link>
-              </li>
             </ul>
           </nav>
           <p className="ml-auto text-center text-sm text-primary md:text-base">

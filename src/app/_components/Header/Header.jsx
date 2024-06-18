@@ -58,7 +58,7 @@ export default function Header() {
               <NavLinkItem
                 pathname={pathname}
                 href={"sign-in"}
-                name={"Login"}
+                name={"Đăng nhập"}
               />
             </DropdownMenuItem>
           ) : (
@@ -66,7 +66,7 @@ export default function Header() {
               <NavLinkItem
                 pathname={pathname}
                 href={"user/user-profile"}
-                name={"Profile"}
+                name={"Trang cá nhân"}
               />
             </DropdownMenuItem>
           )}
@@ -93,7 +93,7 @@ export default function Header() {
           </div>
         ) : (
           <Link href={"/sign-in"}>
-            <Button className="rounded-full ml-8 w-24 xl:py-6">Login</Button>
+            <Button className="rounded-full ml-8 xl:px-6 ">Đăng nhập</Button>
           </Link>
         )}
       </div>

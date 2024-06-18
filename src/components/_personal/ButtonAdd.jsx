@@ -5,7 +5,7 @@ export default function ButtonAdd({ onClick }) {
     <div className="flex items-center" onClick={onClick}>
       <Button className="rounded-full bg-blue-800 hover:bg-blue-600 flex items-center gap-x-2">
         <PackagePlus color="#ffffff" />
-        <span>ADD NEW </span>
+        <span>Thêm mới</span>
       </Button>
     </div>
   );

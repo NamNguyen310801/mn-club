@@ -29,11 +29,11 @@ export default function AvatarDropdown({ user }) {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
         <Link href={"user/user-profile"}>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>Thông tin cá nhân</DropdownMenuItem>
         </Link>
-        <DropdownMenuItem>Team</DropdownMenuItem>
+        <DropdownMenuItem>Club</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -10,7 +10,7 @@ export default function UserList() {
 
   return (
     <div className="w-full flex flex-col">
-      <AdminHeader user={user} title="Admin User" />
+      <AdminHeader user={user} title="Quản Lý Người Dùng" />
       <main className="w-full flex flex-col">
         <UserTop />
         <UserTable />

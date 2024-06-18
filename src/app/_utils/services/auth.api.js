@@ -18,3 +18,12 @@ export const signInAPI = async (data) => {
     return error;
   }
 };
+// forgetPassword
+export const forgetPasswordAPI = async (data) => {
+  try {
+    const res = await axiosUrl.post(ROUTER_API.forgetPasswordURL, data);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};

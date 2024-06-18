@@ -10,7 +10,7 @@ export default function AdminClub() {
 
   return (
     <div className="w-full flex flex-col">
-      <AdminHeader user={user} title="Admin Club" />
+      <AdminHeader user={user} title="Quản Lý Câu Lạc Bộ" />
       <main className="w-full flex flex-col">
         <ClubTop />
         <ClubTable />

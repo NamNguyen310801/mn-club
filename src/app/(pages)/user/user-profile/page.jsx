@@ -8,15 +8,27 @@ import { FaCamera } from "react-icons/fa6";
 import { RiLoginCircleLine } from "react-icons/ri";
 import { useState } from "react";
 import { toast } from "sonner";
-import { getBase64 } from "@/app/_utils/functions/funtions";
+import {
+  getBase64,
+  isDateBeforeToday,
+  validatePhoneNumber,
+} from "@/app/_utils/functions/funtions";
+import { DatePicker } from "@/components/_personal";
 export default function UserProfile() {
   const [data, setData] = useState({
-    name: "",
     email: "",
+    name: "",
+    student_code: "",
+    date: null,
     phone: "",
     avatar: "",
   });
   const [isEdit, setIsEdit] = useState(false);
+
+  const checkName = isEdit && data?.name === "" ? true : false;
+  const checkCode = isEdit && data?.student_code === "" ? true : false;
+  const checkDate = isEdit && isDateBeforeToday(data?.date) ? true : false;
+  const checkPhone = isEdit && !validatePhoneNumber(data?.phone) ? true : false;
   const handleUploadImage = async (e) => {
     const image = await getBase64(e.target.files[0]);
     setData((prev) => ({ ...prev, avatar: image }));
@@ -26,8 +38,8 @@ export default function UserProfile() {
     setIsEdit(false);
   };
   return (
-    <div className="min-h-screen container flex flex-col  gap-y-4 xl:gap-y-6 pb-10 xl:pb-20">
-      <h3 className="text-xl font-bold pt-5">Edit Profile</h3>
+    <div className="min-h-screen container flex flex-col gap-y-4 xl:gap-y-6 pb-10 xl:pb-20">
+      <h3 className="text-xl font-bold pt-5">Chỉnh sửa</h3>
       <div className="flex items-center gap-x-6">
         <div className="relative w-14 h-14 xl:w-20 xl:h-20 ">
           <img
@@ -56,28 +68,42 @@ export default function UserProfile() {
           <Button
             onClick={() => setIsEdit(true)}
             className="bg-white text-primary border border-primary hover:text-white font-semibold">
-            Edit Profile
+            Chỉnh sửa
           </Button>
         ) : (
           <div className="flex items-center gap-x-3">
             <Button
               onClick={onEditUser}
               className="bg-white text-blue-500 border border-blue-500 hover:text-white hover:bg-blue-500 font-semibold">
-              Save Edit
+              Lưu thay đổi
             </Button>
             <Button
               onClick={() => setIsEdit(false)}
               className="bg-white text-red-500 border border-red-500 hover:text-white hover:bg-red-500 font-semibold">
-              Cancel Edit
+              Hủy
             </Button>
           </div>
         )}
         <DialogEditPassword />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 xl:grid-cols-3 pb-6 xl:pb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 xl:grid-cols-3 pb-6 xl:pb-10 min-h-[240px]">
         <div className="flex flex-col gap-y-3">
+          <Label htmlFor="user_profile_email" className="font-semibold">
+            Email *
+          </Label>
+          <Input
+            id="user_profile_email"
+            disabled
+            value={data?.email || ""}
+            className="border"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, email: e.target.value }))
+            }
+          />
+        </div>
+        <div className="flex flex-col gap-y-3 relative">
           <Label htmlFor="user_profile_name" className="font-semibold">
-            Name
+            Tên đầy đủ *
           </Label>
           <Input
             id="user_profile_name"
@@ -88,10 +114,49 @@ export default function UserProfile() {
               setData((pre) => ({ ...pre, name: e.target.value }))
             }
           />
+          {checkName && (
+            <p className="text-red-500 text-sm absolute -bottom-0.5 left-0">
+              Tên không được bỏ trống!
+            </p>
+          )}
         </div>
-        <div className="flex flex-col gap-y-3">
+        <div className="flex flex-col gap-y-3 relative">
+          <Label htmlFor="user_profile_st_code" className="font-semibold">
+            Mã sinh viên *
+          </Label>
+          <Input
+            id="user_profile_st_code"
+            disabled={!isEdit}
+            value={data?.student_code || ""}
+            className="border"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, student_code: e.target.value }))
+            }
+          />
+          {checkCode && (
+            <p className="text-red-500 text-sm absolute -bottom-0.5 left-0">
+              Mã sinh viên không được bỏ trống!
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-y-3 relative">
+          <Label htmlFor="user_profile_date" className="font-semibold">
+            Ngày sinh *
+          </Label>
+          <DatePicker
+            disabled={!isEdit}
+            date={data?.date}
+            setDate={(value) => setData((pre) => ({ ...pre, date: value }))}
+          />
+          {checkDate && (
+            <p className="text-red-500 text-sm absolute -bottom-0.5 left-0">
+              Ngày sinh không hợp lệ!
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-y-3 relative">
           <Label htmlFor="user_profile_phone" className="font-semibold">
-            Phone Number
+            Số điện thoại
           </Label>
           <Input
             id="user_profile_phone"
@@ -102,20 +167,11 @@ export default function UserProfile() {
               setData((pre) => ({ ...pre, phone: e.target.value }))
             }
           />
-        </div>
-        <div className="flex flex-col gap-y-3">
-          <Label htmlFor="user_profile_email" className="font-semibold">
-            Email
-          </Label>
-          <Input
-            id="user_profile_email"
-            disabled={!isEdit}
-            value={data?.email || ""}
-            className="border"
-            onChange={(e) =>
-              setData((pre) => ({ ...pre, email: e.target.value }))
-            }
-          />
+          {checkPhone && (
+            <p className="text-red-500 text-sm absolute -bottom-0.5 left-0">
+              Số điện thoại không phù hợp!
+            </p>
+          )}
         </div>
       </div>
       <div className="w-full flex flex-col mt-6 xl:mt-8">
@@ -124,10 +180,10 @@ export default function UserProfile() {
             <div className="flex items-center justify-center text-primary text-[32px] xl:text-[40px] rounded-lg bg-orange-100 p-1">
               <RiLoginCircleLine />
             </div>
-            <span>Login History</span>
+            <span>Lịch sử đăng nhập</span>
           </div>
           <Button className="bg-white text-primary/80 border border-primary/80 hover:text-white font-semibold">
-            Logout All
+            Đăng xuất tất cả
           </Button>
         </div>
         <div className="flex flex-col w-full mt-6 xl:mt-10">

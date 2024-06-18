@@ -32,7 +32,6 @@ export default function SemesterTop() {
         <DialogTrigger asChild>
           <ButtonAdd />
         </DialogTrigger>
-        <SearchInput />
       </div>
       <DialogContent className="flex flex-col gap-y-2 lg:min-w-[620px] min-h-[550px] bg-blue-200/90">
         <h2 className="text-center font-bold text-xl">ADD SEMESTER</h2>

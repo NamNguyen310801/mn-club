@@ -1,10 +1,14 @@
 import Link from "next/link";
-export default function DashboardItem({ pathname = "", item = null }) {
+export default function DashboardItem({
+  pathname = "",
+  item = null,
+  mainHref,
+}) {
   return (
     <Link
-      href={`/admin${item?.href}`}
+      href={`/${mainHref}${item?.href}`}
       className={`${
-        pathname === "/admin" + item?.href
+        pathname === "/" + mainHref + item?.href
           ? "bg-red-500 rounded-e-full w-4/5"
           : "w-full"
       }  flex items-center justify-start px-4 py-3`}>

@@ -15,31 +15,31 @@ export default function Admin() {
   const color4 = ["#c51d2b", "#d59ca5"];
   return (
     <div className="w-full flex flex-col">
-      <AdminHeader user={user} title="Dashboard" />
+      <AdminHeader user={user} title="Quản Lý Hệ Thống" />
       <main className="w-full flex flex-col px-4 mt-4">
         <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
           {/* Item */}
-          <StatItem color={color} name="Total Users" icon={<FaUserCircle />} />
+          <StatItem
+            color={color}
+            name="Tổng người dùng"
+            icon={<FaUserCircle />}
+          />
           <StatItem
             color={color1}
-            name="Total Event"
+            name="Tổng Sự kiên"
             icon={<FaUserCircle />}
             grow
           />
           <StatItem
             color={color2}
-            name="Total Club"
+            name="Tổng Câu lạc bộ"
             icon={<FaUserCircle />}
             grow
           />
-          <StatItem
-            color={color3}
-            name="Total Semester"
-            icon={<FaUserCircle />}
-          />
+          <StatItem color={color3} name="Tổng kỳ học" icon={<FaUserCircle />} />
           <StatItem
             color={color4}
-            name="Total Member"
+            name="Tổng Sinh viên"
             icon={<FaUserCircle />}
           />
         </div>

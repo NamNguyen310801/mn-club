@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Image from "next/image";
 export default function CreateAccount() {
   const [data, setData] = useState({
     name: "",
@@ -40,10 +41,21 @@ export default function CreateAccount() {
   }
 
   return (
-    <div className="w-full h-auto flex flex-col px-2 md:px-0 mx-auto justify-center items-center">
-      <div className="w-full text-center">Logo</div>
-      <div className="w-full max-w-[460px] flex flex-col mx-auto items-center">
-        <h2 className="text-2xl md:text-3xl font-bold">Create an account</h2>
+    <div className="w-full h-auto flex flex-col px-2 md:px-0 mx-auto justify-center items-center min-h-screen">
+      <Link href={"/"} className="w-full flex justify-center items-center">
+        <Image
+          src={"/next.svg"}
+          width={150}
+          height={96}
+          unoptimized
+          alt="logo"
+          className="h-12 md:h-20 "
+        />
+      </Link>
+      <div className="w-full max-w-[460px] flex flex-col mx-auto items-center px-2">
+        <h2 className="text-2xl md:text-3xl font-bold">
+          Đăng ký tài khoản mới
+        </h2>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -53,7 +65,7 @@ export default function CreateAccount() {
               name="name"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Họ và Tên</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -61,13 +73,13 @@ export default function CreateAccount() {
                       onChange={(e) =>
                         setData((pre) => ({ ...pre, name: e.target.value }))
                       }
-                      placeholder="What should we call you?"
+                      placeholder="Chúng tôi nên gọi bạn là gì?"
                       className="border-b-2 border-black/20 outline-none"
                     />
                   </FormControl>
                   {errName && (
                     <FormDescription className="text-red-500">
-                      Name must be at least 6 characters.
+                      Học và tên cần ít nhất 6 ký tự!
                     </FormDescription>
                   )}
                   <FormMessage />
@@ -83,7 +95,7 @@ export default function CreateAccount() {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="you@domain.com"
+                      placeholder="you@gmail.com"
                       type="email"
                       className="border-b-2 border-black/20 outline-none"
                     />
@@ -97,7 +109,7 @@ export default function CreateAccount() {
               name="password"
               render={({ field }) => (
                 <FormItem className="space-y-2 relative">
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -107,7 +119,7 @@ export default function CreateAccount() {
                     />
                   </FormControl>
                   <FormDescription className="text-primary">
-                    Must be at least 8 characters.
+                    Mật khẩu phải có ít nhất 8 ký tự.
                   </FormDescription>
                   {isPassword ? (
                     <AiOutlineEyeInvisible
@@ -129,7 +141,7 @@ export default function CreateAccount() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem className="space-y-2 relative">
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>Xác nhận mật khẩu</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -157,15 +169,15 @@ export default function CreateAccount() {
             <Button
               type="submit"
               className="bg-orange-600 w-full hover:bg-orange-700 mt-4 text-base md:py-6">
-              Create account
+              Đăng ký
             </Button>
           </form>
         </Form>
         <span className="w-full mt-6 md:text-center">
-          Already a member?
+          Bạn đã có tải khoản?
           <Link href={"/sign-in"} className="text-orange-700">
             {" "}
-            Log in
+            Đăng nhập
           </Link>
         </span>
       </div>

@@ -3,9 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import DashboardItem from "./DashboardItem";
 import { usePathname } from "next/navigation";
-import { AdminDashboardList } from "@/app/_utils/data/data";
 
-export default function AsideDashboard() {
+export default function AsideDashboard({ dashboardList, mainHref }) {
   const pathname = usePathname();
   return (
     <aside className="min-h-screen flex flex-col bg-[#383F51] ">
@@ -22,8 +21,13 @@ export default function AsideDashboard() {
       </div>
       <div className="h-full flex text-white mt-4 items-start justify-start">
         <ul className="w-full flex flex-col">
-          {AdminDashboardList?.map((item, index) => (
-            <DashboardItem pathname={pathname} item={item} key={index} />
+          {dashboardList?.map((item, index) => (
+            <DashboardItem
+              pathname={pathname}
+              item={item}
+              key={index}
+              mainHref={mainHref}
+            />
           ))}
         </ul>
       </div>

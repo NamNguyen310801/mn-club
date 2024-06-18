@@ -50,7 +50,7 @@ export default function UserTop() {
           <div className="flex items-center">
             <Button className="rounded-full bg-blue-800 hover:bg-blue-600 flex items-center gap-x-2">
               <UserPlus color="#ffffff" />
-              <span>ADD NEW </span>
+              <span>Thêm mới</span>
             </Button>
           </div>
         </DialogTrigger>

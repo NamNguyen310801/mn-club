@@ -9,7 +9,7 @@ export default function AdminSemester() {
 
   return (
     <main className="w-full flex flex-col">
-      <AdminHeader user={user} title="Admin Semester" />
+      <AdminHeader user={user} title="Quản Lý Học Kỳ" />
       <SemesterTop />
     </main>
   );

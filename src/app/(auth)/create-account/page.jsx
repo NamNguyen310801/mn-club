@@ -16,7 +16,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { LoaderIcon } from "lucide-react";
+import { registerUserAPI } from "@/app/_utils/services/auth.api";
+import { VerifyAccountAlert } from "@/components/_personal";
+
 export default function CreateAccount() {
+  const [loader, setLoader] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -31,14 +39,34 @@ export default function CreateAccount() {
     defaultValues: data,
   });
 
-  function onSubmit(data) {
-    console.log(data);
-    if (data?.password !== data?.confirmPassword) {
-      toast("err");
+  const router = useRouter();
+  const onCreateAccount = async (dt) => {
+    if (dt?.password !== dt?.confirmPassword) {
+      toast("Mật khẩu không khớp!");
     } else {
-      toast("submit");
+      setLoader(true);
+      const res = await registerUserAPI(dt);
+      if (res?.status == 200) {
+        sessionStorage.setItem("user", JSON.stringify(res.data.user));
+        sessionStorage.setItem(
+          "access_token",
+          JSON.stringify(res?.access_token)
+        );
+        sessionStorage.setItem(
+          "refresh_token",
+          JSON.stringify(res?.refresh_token)
+        );
+        toast("Đăng ký tài khoản thành công!");
+        setLoader(false);
+        setTimeout(() => {
+          setOpen(true);
+        }, 300);
+      } else {
+        toast("Lỗi khi đăng ký!");
+        setLoader(false);
+      }
     }
-  }
+  };
 
   return (
     <div className="w-full h-auto flex flex-col px-2 md:px-0 mx-auto justify-center items-center min-h-screen">
@@ -58,7 +86,7 @@ export default function CreateAccount() {
         </h2>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onCreateAccount)}
             className="flex flex-col gap-y-4 w-full md:mt-4">
             <FormField
               control={form.control}
@@ -69,10 +97,6 @@ export default function CreateAccount() {
                   <FormControl>
                     <Input
                       {...field}
-                      value={data?.name}
-                      onChange={(e) =>
-                        setData((pre) => ({ ...pre, name: e.target.value }))
-                      }
                       placeholder="Chúng tôi nên gọi bạn là gì?"
                       className="border-b-2 border-black/20 outline-none"
                     />
@@ -169,7 +193,7 @@ export default function CreateAccount() {
             <Button
               type="submit"
               className="bg-orange-600 w-full hover:bg-orange-700 mt-4 text-base md:py-6">
-              Đăng ký
+              {loader ? <LoaderIcon className="animate-spin" /> : "Đăng ký"}
             </Button>
           </form>
         </Form>
@@ -181,6 +205,11 @@ export default function CreateAccount() {
           </Link>
         </span>
       </div>
+      <VerifyAccountAlert
+        open={open}
+        onOpenChange={setOpen}
+        onContinue={() => router.push("/verify-account")}
+      />
     </div>
   );
 }

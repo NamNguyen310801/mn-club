@@ -1,11 +1,10 @@
 "use client";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ButtonAdd, FormItem } from "@/components/_personal";
-import { useState } from "react";
-import { toast } from "sonner";
+import { ButtonEdit, FormItem, SearchInput } from "@/components/_personal";
 import { Button } from "@/components/ui/button";
+import { UserPlus } from "lucide-react";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -15,13 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-export default function ClubTop() {
+import { useEffect, useState } from "react";
+import { getBase64 } from "@/app/_utils/functions/functions";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+export default function EditUserDialog({ dataRow }) {
   const defaultData = {
     user_id: "",
     username: "",
     email: "",
     role_id: 1,
-    first_name: "",
+    gender: "",
     last_name: "",
     address: "",
     phone_number: "",
@@ -33,28 +35,36 @@ export default function ClubTop() {
     verify: "",
   };
   const [data, setData] = useState(defaultData);
-  const onSubmit = () => {
+  useEffect(() => {
+    setData(dataRow);
+  }, [dataRow]);
+
+  const handleUploadImage = async (e) => {
+    const image = await getBase64(e.target.files[0]);
+    setData((prev) => ({ ...prev, avatar: image }));
+  };
+  const onUpdateUser = () => {
     console.log(data);
     toast("submit");
   };
   return (
     <Dialog className="bg-black/20">
-      <div className="w-full flex p-4 items-center justify-between">
-        <DialogTrigger asChild>
-          <ButtonAdd />
-        </DialogTrigger>
-      </div>
+      <DialogTrigger asChild>
+        <div className="flex items-center">
+          <ButtonEdit />
+        </div>
+      </DialogTrigger>
       <DialogContent className="flex flex-col gap-y-2 lg:min-w-[620px] min-h-[550px] bg-blue-200/90">
         <h2 className="text-center font-bold text-xl capitalize">
-          Thêm mới Câu lạc bộ
+          Cập nhật người dùng
         </h2>
         <form className="grid grid-cols-2 gap-3 mt-2 text-sm">
           {/* Email */}
           <FormItem
-            name="Tên Viết Tắt:"
+            name="Email:"
             id="email"
             value={data?.email}
-            placeHolder="Tên Viết Tắt"
+            placeHolder="Email"
             type="email"
             onChange={(e) =>
               setData((pre) => ({ ...pre, email: e.target.value }))
@@ -63,10 +73,10 @@ export default function ClubTop() {
 
           {/* Username */}
           <FormItem
-            name="Tên Câu Lạc Bộ:"
+            name="Tên đăng nhập:"
             id="username"
             value={data?.username}
-            placeHolder="Tên Câu Lạc Bộ"
+            placeHolder="Tên đăng nhập"
             type="text"
             onChange={(e) =>
               setData((pre) => ({ ...pre, username: e.target.value }))
@@ -74,21 +84,19 @@ export default function ClubTop() {
           />
           {/* phone */}
           <FormItem
-            name="Chủ nhiệm:"
+            name="Số điện thoại:"
             id="phone_number"
             value={data?.phone_number}
-            placeHolder="Chủ nhiệm"
+            placeHolder="Số điện thoại"
             type="tel"
             className="w-1/2"
             onChange={(e) =>
               setData((pre) => ({ ...pre, phone_number: e.target.value }))
             }
           />
-
-          {/* last name */}
           <div className="flex flex-col items-start gap-y-3">
             <Label htmlFor="role" className="">
-              Loại Câu Lạc Bộ:
+              Vai trò:
             </Label>
             <Select
               className="border-b"
@@ -96,7 +104,7 @@ export default function ClubTop() {
                 setData((pre) => ({ ...pre, role_id: Number(value) }))
               }>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Chọn Loại Câu Lạc Bộ" />
+                <SelectValue placeholder="Chọn vai trò" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -110,13 +118,25 @@ export default function ClubTop() {
             </Select>
           </div>
 
+          {/* last name */}
+          <FormItem
+            name="Tên sinh viên:"
+            id="last_name"
+            value={data?.last_name}
+            placeHolder="Tên sinh viên"
+            type="text"
+            className="w-1/2"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, last_name: e.target.value }))
+            }
+          />
           {/* student code */}
 
           <FormItem
-            name="Ngày thành Lập:"
+            name="Mã sinh viên:"
             id="student_code"
             value={data?.student_code}
-            placeHolder="Ngày thành Lập"
+            placeHolder="Mã sinh viên"
             type="text"
             className="w-1/2"
             onChange={(e) =>
@@ -126,44 +146,68 @@ export default function ClubTop() {
 
           {/* address */}
           <FormItem
-            name="Số Lượng Thành Viên:"
+            name="Địa chỉ:"
             id="address"
             value={data?.address}
-            placeHolder="Số Lượng Thành Viên"
-            type="number"
+            placeHolder="Địa chỉ"
+            type="text"
             onChange={(e) =>
               setData((pre) => ({ ...pre, address: e.target.value }))
             }
           />
-          {/* enable */}
+          {/* pass */}
+
+          <FormItem
+            name="Mật khẩu:"
+            id="password"
+            value={data?.password}
+            placeHolder="Mật khẩu"
+            type="password"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, password: e.target.value }))
+            }
+          />
+          {/* gender */}
           <div className="flex flex-col items-start gap-y-3">
             <Label htmlFor="role" className="">
-              Trạng Thái:
+              Giới tính:
             </Label>
             <RadioGroup
-              defaultValue="true"
+              defaultValue="1"
               className="flex justify-between items-center w-full px-4"
-              onValueChange={(value) =>
-                setData((pre) => ({
-                  ...pre,
-                  enable: value === "true" ? true : false,
-                }))
+              onChange={(value) =>
+                setData((pre) => ({ ...pre, gender: Number(value) }))
               }>
               <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="true" id="enable_1" />
-                <Label htmlFor="enable_1">Active</Label>
+                <RadioGroupItem value="1" id="gender_1" />
+                <Label htmlFor="gender_1">Nam</Label>
               </div>
               <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="false" id="enable_2" />
-                <Label htmlFor="enable_2">Inactive</Label>
+                <RadioGroupItem value="2" id="gender_2" />
+                <Label htmlFor="gender_2">Nữ</Label>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <RadioGroupItem value="3" id="gender_3" />
+                <Label htmlFor="gender_3">Khác</Label>
               </div>
             </RadioGroup>
           </div>
+
+          <FormItem
+            name="Avatar:"
+            id="avatar"
+            value={data?.avatar}
+            placeHolder="Avatar"
+            type="file"
+            onChange={(e) => handleUploadImage(e)}
+          />
         </form>
         <div
           className="w-full flex items-center justify-center mt-auto"
-          onClick={onSubmit}>
-          <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">Thêm</Button>
+          onClick={onUpdateUser}>
+          <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">
+            Cập nhật
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

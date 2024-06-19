@@ -6,7 +6,7 @@ import { useState } from "react";
 import ChangePassword from "./_components/ChangePassword";
 import { Step, StepLabel, Stepper } from "@mui/material";
 import { InputOTPConfirm } from "@/components/_personal";
-import { validateEmail } from "@/app/_utils/functions/funtions";
+import { validateEmail } from "@/app/_utils/functions/functions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

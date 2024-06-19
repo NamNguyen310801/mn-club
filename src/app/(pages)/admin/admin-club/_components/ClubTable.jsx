@@ -2,6 +2,7 @@
 import MUIDataTable from "mui-datatables";
 import { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 export default function ClubTable() {
   const [club, setClub] = useState();
   const columns = [
@@ -39,16 +40,48 @@ export default function ClubTable() {
       label: "Trạng thái",
       options: {
         customBodyRender: (value) => <div>{value ? "Active" : "Inactive"}</div>,
+        filter: true,
+        filterType: "dropdown",
+        filterOptions: {
+          names: ["Active", "Inactive"],
+          logic: (enable, filterVal) => {
+            if (filterVal.length > 0) {
+              return (filterVal.includes("Active") && enable) ||
+                (filterVal.includes("Inactive") && !enable)
+                ? false
+                : true;
+            }
+            return false;
+          },
+        },
+        customFilterListOptions: {
+          render: (value) => {
+            if (value === true) return "Active";
+            if (value === false) return "Inactive";
+            return value;
+          },
+        },
       },
     },
 
     {
-      name: "action",
-      label: "Action",
+      name: "",
+      label: "",
       options: {
-        customBodyRender: (value) => <div className="cursor-pointer">edit</div>,
         filter: false,
         download: false,
+        sort: false,
+        empty: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <div className="flex items-center justify-between px-4">
+              {/* <EditUserDialog dataRow={data[tableMeta?.rowIndex]} /> */}
+              <DeleteAlertDialog
+                onClick={() => handleDelete(tableMeta?.rowIndex)}
+              />
+            </div>
+          );
+        },
       },
     },
   ];
@@ -124,9 +157,6 @@ export default function ClubTable() {
   const getMuiTheme = () =>
     createTheme({
       palette: {
-        background: {
-          paper: "#383F51",
-        },
         mode: "light",
       },
       components: {
@@ -159,7 +189,7 @@ export default function ClubTable() {
               backgroundColor: "#A9A9A9",
             },
             toolButton: {
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: 600,
             },
           },
@@ -174,6 +204,10 @@ export default function ClubTable() {
       },
     });
 
+  const handleDelete = (rowIndex) => {
+    const rowData = data[rowIndex];
+    console.log("Delete action for row: ", rowData);
+  };
   return (
     <div className="w-full h-full">
       <ThemeProvider theme={getMuiTheme()}>

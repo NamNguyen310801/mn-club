@@ -1,5 +1,5 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { AvatarDropdown, NavLinkItem } from "@/components/_personal";
@@ -13,14 +13,22 @@ import {
 import { AlignJustify } from "lucide-react";
 import Link from "next/link";
 import { NavLinkList } from "@/app/_utils/data/data";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { resetUserAuth } from "@/app/_utils/store/auth.slice";
 
 export default function Header() {
   const pathname = usePathname();
-  const user = useSelector((state) => state.auth.userAuth);
+  const dispatch = useDispatch();
 
+  const user = useSelector((state) => state.auth.userAuth);
+  const router = useRouter();
   const showHeader =
     pathname === "/sign-in" || pathname === "/create-account" ? false : true;
+  const onSignOut = () => {
+    sessionStorage.clear();
+    dispatch(resetUserAuth());
+    router.push("/sign-in");
+  };
   return (
     <header
       className={`${

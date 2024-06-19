@@ -6,15 +6,18 @@ import DialogEditPassword from "./_components/DialogEditPassword";
 import LoginHistoryItem from "./_components/LoginHistoryItem";
 import { FaCamera } from "react-icons/fa6";
 import { RiLoginCircleLine } from "react-icons/ri";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   getBase64,
   isDateBeforeToday,
   validatePhoneNumber,
-} from "@/app/_utils/functions/funtions";
+} from "@/app/_utils/functions/functions";
 import { DatePicker } from "@/components/_personal";
+import { updateUserAPI } from "@/app/_utils/services/user.api";
+import { useSelector } from "react-redux";
 export default function UserProfile() {
+  const userAuth = useSelector((state) => state.auth.userAuth);
   const [data, setData] = useState({
     email: "",
     name: "",
@@ -23,8 +26,11 @@ export default function UserProfile() {
     phone: "",
     avatar: "",
   });
-  const [isEdit, setIsEdit] = useState(false);
+  useEffect(() => {
+    setData(userAuth);
+  }, [userAuth]);
 
+  const [isEdit, setIsEdit] = useState(false);
   const checkName = isEdit && data?.name === "" ? true : false;
   const checkCode = isEdit && data?.student_code === "" ? true : false;
   const checkDate = isEdit && isDateBeforeToday(data?.date) ? true : false;
@@ -33,9 +39,21 @@ export default function UserProfile() {
     const image = await getBase64(e.target.files[0]);
     setData((prev) => ({ ...prev, avatar: image }));
   };
-  const onEditUser = () => {
-    toast("Update success");
-    setIsEdit(false);
+
+  // API update user
+  const onEditUser = async () => {
+    if (!checkName && !checkCode && !checkDate && !checkPhone) {
+      const res = await updateUserAPI();
+      if (res) {
+        toast("Cập nhật thành công!");
+        setIsEdit(false);
+      } else {
+        toast("Lỗi khi cập nhật");
+        setIsEdit(false);
+      }
+    } else {
+      toast("Vui lòng điền thông tin hợp lệ!");
+    }
   };
   return (
     <div className="min-h-screen container flex flex-col gap-y-4 xl:gap-y-6 pb-10 xl:pb-20">

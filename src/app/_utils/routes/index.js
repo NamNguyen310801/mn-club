@@ -1,7 +1,21 @@
 const ROUTER_API = {
   // Auth
-  register: "/auth/local/register",
-  signIn: "/auth/local",
+  register: "/api/auth/local/register",
+  signIn: "/api/Common/Login/Login",
+  logout: "",
   forgetPasswordURL: "/",
+  verifyAccountURL: "/",
+  verifyOtpURL: "/",
+  refreshTokenURL: "/",
+
+  // User
+  getDetailUserURL: "/api",
+  editProfileUserURL: "/api",
+  getAllUserURL: "/api",
+  deleteUserURL: "/",
+
+  //Club
+  createClubURL: "/",
+  updateClubURL: "",
 };
 export default ROUTER_API;

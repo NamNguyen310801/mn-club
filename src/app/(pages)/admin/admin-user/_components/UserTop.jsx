@@ -15,14 +15,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { getBase64 } from "@/app/_utils/functions/funtions";
+import { getBase64 } from "@/app/_utils/functions/functions";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 export default function UserTop() {
   const defaultData = {
     user_id: "",
     username: "",
     email: "",
     role_id: 1,
-    first_name: "",
+    gender: "",
     last_name: "",
     address: "",
     phone_number: "",
@@ -54,11 +56,12 @@ export default function UserTop() {
             </Button>
           </div>
         </DialogTrigger>
-        <SearchInput />
       </div>
       <DialogContent className="flex flex-col gap-y-2 lg:min-w-[620px] min-h-[550px] bg-blue-200/90">
-        <h2 className="text-center font-bold text-xl">ADD USER</h2>
-        <form className="flex flex-col gap-y-2 mt-2 text-sm">
+        <h2 className="text-center font-bold text-xl capitalize">
+          Thêm người dùng
+        </h2>
+        <form className="grid grid-cols-2 gap-3 mt-2 text-sm">
           {/* Email */}
           <FormItem
             name="Email:"
@@ -73,157 +76,139 @@ export default function UserTop() {
 
           {/* Username */}
           <FormItem
-            name="Username:"
+            name="Tên đăng nhập:"
             id="username"
             value={data?.username}
-            placeHolder="Username"
+            placeHolder="Tên đăng nhập"
             type="text"
             onChange={(e) =>
               setData((pre) => ({ ...pre, username: e.target.value }))
             }
           />
           {/* phone */}
-          <div className="flex w-full items-center gap-x-1">
-            <FormItem
-              name="Phone:"
-              id="phone_number"
-              value={data?.phone_number}
-              placeHolder="Phone"
-              type="tel"
-              className="w-1/2 "
-              onChange={(e) =>
-                setData((pre) => ({ ...pre, phone_number: e.target.value }))
-              }
-            />
-
-            <div className="flex items-center gap-x-2 w-1/2">
-              <Label htmlFor="role" className="text-right min-w-20">
-                Role:
-              </Label>
-              <Select
-                className="border-b"
-                onValueChange={(value) =>
-                  setData((pre) => ({ ...pre, role_id: Number(value) }))
-                }>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Role</SelectLabel>
-                    <SelectItem value={"1"}>Admin</SelectItem>
-                    <SelectItem value={"2"}>Manage</SelectItem>
-                    <SelectItem value={"3"}>Basic</SelectItem>
-                    <SelectItem value={"4"}>Guest</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
+          <FormItem
+            name="Số điện thoại:"
+            id="phone_number"
+            value={data?.phone_number}
+            placeHolder="Số điện thoại"
+            type="tel"
+            className="w-1/2"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, phone_number: e.target.value }))
+            }
+          />
+          <div className="flex flex-col items-start gap-y-3">
+            <Label htmlFor="role" className="">
+              Vai trò:
+            </Label>
+            <Select
+              className="border-b"
+              onValueChange={(value) =>
+                setData((pre) => ({ ...pre, role_id: Number(value) }))
+              }>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Chọn vai trò" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Vai trò</SelectLabel>
+                  <SelectItem value={"1"}>Admin</SelectItem>
+                  <SelectItem value={"2"}>Manage</SelectItem>
+                  <SelectItem value={"3"}>Basic</SelectItem>
+                  <SelectItem value={"4"}>Guest</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* last name */}
-          <div className="flex w-full items-center gap-x-1">
-            <FormItem
-              name="Last Name:"
-              id="last_name"
-              value={data?.last_name}
-              placeHolder="Last Name"
-              type="text"
-              className="w-1/2"
-              onChange={(e) =>
-                setData((pre) => ({ ...pre, last_name: e.target.value }))
-              }
-            />
-            <FormItem
-              name="First Name:"
-              id="first_name"
-              value={data?.first_name}
-              placeHolder="First Name"
-              type="text"
-              className="w-1/2"
-              onChange={(e) =>
-                setData((pre) => ({ ...pre, first_name: e.target.value }))
-              }
-            />
-          </div>
+          <FormItem
+            name="Tên sinh viên:"
+            id="last_name"
+            value={data?.last_name}
+            placeHolder="Tên sinh viên"
+            type="text"
+            className="w-1/2"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, last_name: e.target.value }))
+            }
+          />
+          {/* student code */}
+
+          <FormItem
+            name="Mã sinh viên:"
+            id="student_code"
+            value={data?.student_code}
+            placeHolder="Mã sinh viên"
+            type="text"
+            className="w-1/2"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, student_code: e.target.value }))
+            }
+          />
 
           {/* address */}
           <FormItem
-            name="Address:"
+            name="Địa chỉ:"
             id="address"
             value={data?.address}
-            placeHolder="Address"
+            placeHolder="Địa chỉ"
             type="text"
             onChange={(e) =>
               setData((pre) => ({ ...pre, address: e.target.value }))
             }
           />
-
-          {/* description */}
-          <FormItem
-            name="Des:"
-            id="description"
-            value={data?.description}
-            placeHolder="Description"
-            type="text"
-            onChange={(e) =>
-              setData((pre) => ({ ...pre, description: e.target.value }))
-            }
-          />
-          {/* student code */}
-          <div className="flex w-full items-center gap-x-1">
-            <FormItem
-              name="Student Code:"
-              id="student_code"
-              value={data?.student_code}
-              placeHolder="Student Code"
-              type="text"
-              className="w-1/2"
-              onChange={(e) =>
-                setData((pre) => ({ ...pre, student_code: e.target.value }))
-              }
-            />
-            <FormItem
-              name="Avatar:"
-              id="avatar"
-              value={data?.avatar}
-              placeHolder="Avatar"
-              type="file"
-              className="w-1/2"
-              onChange={(e) => handleUploadImage(e)}
-            />
-          </div>
           {/* pass */}
 
-          <div className="flex w-full items-center gap-x-1">
-            <FormItem
-              name="Password:"
-              id="password"
-              value={data?.password}
-              placeHolder="Password"
-              type="text"
-              className="w-1/2"
-              onChange={(e) =>
-                setData((pre) => ({ ...pre, password: e.target.value }))
-              }
-            />
-            {/* <FormItem
-              name="Password:"
-              id="password"
-              value={data?.password}
-              placeHolder="Password"
-              type="text"
-              className="w-1/2"
-              onChange={(e) =>
-                setData((pre) => ({ ...pre, password: e.target.value }))
-              }
-            /> */}
+          <FormItem
+            name="Mật khẩu:"
+            id="password"
+            value={data?.password}
+            placeHolder="Mật khẩu"
+            type="text"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, password: e.target.value }))
+            }
+          />
+          {/* gender */}
+          <div className="flex flex-col items-start gap-y-3">
+            <Label htmlFor="role" className="">
+              Giới tính:
+            </Label>
+            <RadioGroup
+              defaultValue="1"
+              className="flex justify-between items-center w-full px-4"
+              onValueChange={(value) =>
+                setData((pre) => ({ ...pre, gender: Number(value) }))
+              }>
+              <div className="flex items-center gap-x-3">
+                <RadioGroupItem value="1" id="gender_1" />
+                <Label htmlFor="gender_1">Nam</Label>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <RadioGroupItem value="2" id="gender_2" />
+                <Label htmlFor="gender_2">Nữ</Label>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <RadioGroupItem value="3" id="gender_3" />
+                <Label htmlFor="gender_3">Khác</Label>
+              </div>
+            </RadioGroup>
           </div>
+
+          <FormItem
+            name="Avatar:"
+            id="avatar"
+            value={data?.avatar}
+            placeHolder="Avatar"
+            type="file"
+            onChange={(e) => handleUploadImage(e)}
+          />
         </form>
         <div
           className="w-full flex items-center justify-center mt-auto"
           onClick={onSubmit}>
-          <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">Add</Button>
+          <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">Thêm</Button>
         </div>
       </DialogContent>
     </Dialog>

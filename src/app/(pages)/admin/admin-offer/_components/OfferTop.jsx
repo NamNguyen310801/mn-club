@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { getBase64 } from "@/app/_utils/functions/funtions";
+import { getBase64 } from "@/app/_utils/functions/functions";
 export default function OfferTop() {
   const defaultData = {
     user_id: "",

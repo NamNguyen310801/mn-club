@@ -5,8 +5,9 @@ import {
 } from "@/components/ui/input-otp";
 export default function InputOTPConfirm({ value, setValue }) {
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 flex flex-col items-center justify-center">
       <InputOTP
+        className=""
         maxLength={6}
         value={value}
         onChange={(value) => setValue(value)}>

@@ -1,3 +1,5 @@
+"use client";
+import { resetUserAuth } from "@/app/_utils/store/auth.slice";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,8 +10,18 @@ import {
 import { avatarDF } from "@/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 export default function AvatarDropdown({ user }) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const onSignOut = () => {
+    sessionStorage.clear();
+    dispatch(resetUserAuth());
+    router.push("/sign-in");
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,10 +42,33 @@ export default function AvatarDropdown({ user }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
+        {user?.role === 3 && (
+          <Link href={"admin"}>
+            <DropdownMenuItem className="cursor-pointer">
+              Trang quản lý
+            </DropdownMenuItem>
+          </Link>
+        )}
+        {user?.role === 2 && (
+          <Link href={"manager"}>
+            <DropdownMenuItem className="cursor-pointer">
+              Trang quản lý
+            </DropdownMenuItem>
+          </Link>
+        )}
         <Link href={"user/user-profile"}>
-          <DropdownMenuItem>Thông tin cá nhân</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            Trang cá nhân
+          </DropdownMenuItem>
         </Link>
-        <DropdownMenuItem>Club</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          Câu lạc bộ
+        </DropdownMenuItem>
+        <div onClick={onSignOut}>
+          <DropdownMenuItem className="cursor-pointer">
+            Đăng xuất
+          </DropdownMenuItem>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

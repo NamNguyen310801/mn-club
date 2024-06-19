@@ -11,10 +11,10 @@ export default function FormItem({
   className = "",
 }) {
   return (
-    <div className={`flex w-full items-center gap-x-1 ${className}`}>
+    <div className={`flex flex-col w-full items-start gap-y-3 ${className}`}>
       {type !== "file" ? (
         <>
-          <Label htmlFor={id} className="text-right min-w-20">
+          <Label htmlFor={id} className="text-right">
             {name}
           </Label>
           <Input
@@ -27,15 +27,15 @@ export default function FormItem({
           />
         </>
       ) : (
-        <>
-          <Label className="text-right min-w-20">{name}</Label>
+        <div className="flex items-start gap-x-3">
+          <Label className="text-right">{name}</Label>
           <Input
             id={id}
             type="file"
             className="border-b cursor-pointer hidden"
             onChange={(e) => onChange(e)}
           />
-          <div className="flex items-center">
+          <div className={`flex ${value ? "items-center" : "items-start"}`}>
             {value && (
               <img
                 src={value}
@@ -43,11 +43,11 @@ export default function FormItem({
                 className="w-10 h-10 rounded-full object-center object-cover"
               />
             )}
-            <Label htmlFor={id} className="ml-4 min-w-20 cursor-pointer">
+            <Label htmlFor={id} className="ml-3 min-w-20 cursor-pointer">
               Chọn
             </Label>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

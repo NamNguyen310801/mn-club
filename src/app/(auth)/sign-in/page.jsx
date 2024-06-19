@@ -16,9 +16,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { validateEmail } from "@/app/_utils/functions/funtions";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { LoaderIcon } from "lucide-react";
+import { signInAPI } from "@/app/_utils/services/auth.api";
+import { validateEmail } from "@/app/_utils/functions/functions";
+import { jwtDecode } from "jwt-decode";
+import { getDetailUserAPI } from "@/app/_utils/services/user.api";
+import { useDispatch } from "react-redux";
+import { setJwtAuth, setUserAuth } from "@/app/_utils/store/auth.slice";
+import { VerifyAccountAlert } from "@/components/_personal";
 export default function SignIn() {
+  const dispatch = useDispatch();
+  const [loader, setLoader] = useState(false);
+  const [open, setOpen] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -29,11 +40,52 @@ export default function SignIn() {
     defaultValues: data,
   });
 
-  function onSubmit(data) {
-    console.log(checkEmail);
-    toast("submit");
-  }
-
+  const router = useRouter();
+  const onLoginAccount = async (dt) => {
+    setLoader(true);
+    const res = await signInAPI(dt);
+    if (res?.status == 200) {
+      if (res?.access_token && res?.refresh_token) {
+        const decoded = jwtDecode(res.access_token);
+        if (decoded?.id) {
+          handleGetDetailsUser(
+            decoded?.id,
+            res?.access_token,
+            res?.refresh_token
+          );
+        }
+        sessionStorage.setItem(
+          "access_token",
+          JSON.stringify(res?.access_token)
+        );
+        sessionStorage.setItem(
+          "refresh_token",
+          JSON.stringify(res?.refresh_token)
+        );
+        toast("Đăng nhập thành công");
+        setLoader(false);
+        setTimeout(() => {
+          router.push("/");
+        }, 300);
+      } else {
+        toast("Lỗi khi đăng nhập");
+        setLoader(false);
+      }
+    } else {
+      toast("Lỗi khi đăng nhập");
+      setLoader(false);
+    }
+  };
+  const handleGetDetailsUser = async (id, accessToken, refreshToken) => {
+    const res = await getDetailUserAPI(id, accessToken);
+    dispatch(setUserAuth(res?.data));
+    dispatch(
+      setJwtAuth({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      })
+    );
+  };
   return (
     <div className="w-full h-auto flex flex-col px-2 md:px-0 mx-auto justify-center items-center min-h-screen">
       <Link href={"/"} className="w-full flex justify-center items-center">
@@ -50,20 +102,22 @@ export default function SignIn() {
         <h2 className="text-2xl md:text-3xl font-bold">
           Đăng nhập với chúng tôi
         </h2>
-        <Button className="bg-white border text-black border-primary w-full hover:bg-[#4d4c4c] hover:opacity-50 hover:text-white mt-4 text-base rounded-full flex items-center justify-center gap-x-2 md:py-6">
+        <Button
+          onClick={() => setOpen(true)}
+          className="bg-white border text-black border-primary w-full hover:bg-[#4d4c4c] hover:opacity-50 hover:text-white mt-4 text-base rounded-full flex items-center justify-center gap-x-2 md:py-6">
           <FcGoogle className="text-2xl" />
           <span>Tiếp tục với Google</span>
         </Button>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onLoginAccount)}
             className="flex flex-col gap-y-4 w-full mt-2 md:mt-4">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Tên đăng nhập</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -110,8 +164,9 @@ export default function SignIn() {
             />
             <Button
               type="submit"
+              disabled={loader}
               className="bg-blue-500 hover:bg-blue-600 w-full mt-4 text-base rounded-full md:py-6">
-              Đăng nhập
+              {loader ? <LoaderIcon className="animate-spin" /> : "Đăng nhập"}
             </Button>
           </form>
         </Form>
@@ -128,6 +183,11 @@ export default function SignIn() {
           </Link>
         </span>
       </div>
+      <VerifyAccountAlert
+        open={open}
+        onOpenChange={setOpen}
+        onContinue={() => router.push("/verify-account")}
+      />
     </div>
   );
 }

@@ -53,6 +53,15 @@ export const verifyOtpAPI = async (data) => {
     return error;
   }
 };
+// Change Pas
+export const changePasswordAPI = async (data) => {
+  try {
+    const res = await axiosUrl.post(ROUTER_API.changePasswordURL, data);
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
 //refreshToken
 export const refreshTokenAPI = async (refToken) => {
   try {

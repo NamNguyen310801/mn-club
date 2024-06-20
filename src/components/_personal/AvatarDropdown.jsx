@@ -43,20 +43,20 @@ export default function AvatarDropdown({ user }) {
       <DropdownMenuContent>
         <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
         {user?.role === 3 && (
-          <Link href={"admin"}>
+          <Link href={"/admin"}>
             <DropdownMenuItem className="cursor-pointer">
               Trang quản lý
             </DropdownMenuItem>
           </Link>
         )}
         {user?.role === 2 && (
-          <Link href={"manager"}>
+          <Link href={"/manager"}>
             <DropdownMenuItem className="cursor-pointer">
               Trang quản lý
             </DropdownMenuItem>
           </Link>
         )}
-        <Link href={"user/user-profile"}>
+        <Link href={"/user/user-profile"}>
           <DropdownMenuItem className="cursor-pointer">
             Trang cá nhân
           </DropdownMenuItem>

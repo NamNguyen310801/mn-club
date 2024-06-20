@@ -11,6 +11,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  changePasswordAPI,
+  forgetPasswordAPI,
+  verifyOtpAPI,
+} from "@/app/_utils/services/auth.api";
 
 export default function ForgetPassword() {
   const steps = ["Nhập Email của bạn", "Nhập mã OTP", "Thay đổi mật khẩu"];
@@ -25,33 +30,61 @@ export default function ForgetPassword() {
   const handleNext = () => {
     if (activeStep === 0) {
       if (validateEmail(email)) {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        toast("Email hợp lệ");
+        forgetPass();
       } else {
         toast("Email không hợp lệ");
       }
     }
     if (activeStep === 1) {
       if (otp) {
-        toast("OTP hợp lệ");
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        verifyOtp();
       } else {
         toast("OTP không hợp lệ");
       }
     }
     if (activeStep === 2) {
-      if (validateEmail(email)) {
-        toast("Thay đổi mật khẩu thành công!");
-        setTimeout(() => {
-          router.push("/sign-in");
-        }, 500);
+      if (
+        data?.newPassword?.length >= 8 &&
+        data?.newPassword === data?.cfNewPassword
+      ) {
+        changePassword();
       } else {
-        toast("Thay đổi mật khẩu không thành công!");
+        toast("Mật khẩu không trùng khớp!");
       }
     }
   };
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const forgetPass = async () => {
+    const res = await forgetPasswordAPI();
+    if (res) {
+      toast("OTP hợp lệ");
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      toast("Email không tồn tại!");
+    }
+  };
+  const verifyOtp = async () => {
+    const res = await verifyOtpAPI();
+    if (res) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      toast("OTP hợp lệ");
+    } else {
+      toast("OTP không trùng khớp");
+    }
+  };
+  const changePassword = async () => {
+    const res = await changePasswordAPI();
+    if (res) {
+      toast("Thay đổi mật khẩu thành công!");
+      setTimeout(() => {
+        router.push("/sign-in");
+      }, 500);
+    } else {
+      toast("Thay đổi mật khẩu không thành công!");
+    }
   };
   return (
     <div className="w-full h-auto flex flex-col px-2 md:px-0 mx-auto justify-center items-center min-h-screen">

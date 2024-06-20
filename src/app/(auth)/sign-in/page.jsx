@@ -86,6 +86,8 @@ export default function SignIn() {
       })
     );
   };
+  // Login gg
+  const onLoginWithGoogle = () => {};
   return (
     <div className="w-full h-auto flex flex-col px-2 md:px-0 mx-auto justify-center items-center min-h-screen">
       <Link href={"/"} className="w-full flex justify-center items-center">
@@ -103,7 +105,7 @@ export default function SignIn() {
           Đăng nhập với chúng tôi
         </h2>
         <Button
-          onClick={() => setOpen(true)}
+          onClick={onLoginWithGoogle}
           className="bg-white border text-black border-primary w-full hover:bg-[#4d4c4c] hover:opacity-50 hover:text-white mt-4 text-base rounded-full flex items-center justify-center gap-x-2 md:py-6">
           <FcGoogle className="text-2xl" />
           <span>Tiếp tục với Google</span>
@@ -183,11 +185,11 @@ export default function SignIn() {
           </Link>
         </span>
       </div>
-      <VerifyAccountAlert
+      {/* <VerifyAccountAlert
         open={open}
         onOpenChange={setOpen}
         onContinue={() => router.push("/verify-account")}
-      />
+      /> */}
     </div>
   );
 }

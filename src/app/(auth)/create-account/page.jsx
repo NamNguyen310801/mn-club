@@ -28,6 +28,7 @@ export default function CreateAccount() {
   const [data, setData] = useState({
     name: "",
     email: "",
+    student_code: "",
     password: "",
     confirmPassword: "",
   });
@@ -41,6 +42,7 @@ export default function CreateAccount() {
 
   const router = useRouter();
   const onCreateAccount = async (dt) => {
+    console.log(dt);
     if (dt?.password !== dt?.confirmPassword) {
       toast("Mật khẩu không khớp!");
     } else {
@@ -58,9 +60,9 @@ export default function CreateAccount() {
         );
         toast("Đăng ký tài khoản thành công!");
         setLoader(false);
-        setTimeout(() => {
-          setOpen(true);
-        }, 300);
+        // setTimeout(() => {
+        //   setOpen(true);
+        // }, 300);
       } else {
         toast("Lỗi khi đăng ký!");
         setLoader(false);
@@ -121,6 +123,24 @@ export default function CreateAccount() {
                       {...field}
                       placeholder="you@gmail.com"
                       type="email"
+                      className="border-b-2 border-black/20 outline-none"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="student_code"
+              render={({ field }) => (
+                <FormItem className="space-y-2 ">
+                  <FormLabel>Mã sinh viên</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Mã sinh viên của bạn!"
+                      type="text"
                       className="border-b-2 border-black/20 outline-none"
                     />
                   </FormControl>
@@ -205,11 +225,11 @@ export default function CreateAccount() {
           </Link>
         </span>
       </div>
-      <VerifyAccountAlert
+      {/* <VerifyAccountAlert
         open={open}
         onOpenChange={setOpen}
         onContinue={() => router.push("/verify-account")}
-      />
+      /> */}
     </div>
   );
 }

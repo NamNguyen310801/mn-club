@@ -22,10 +22,9 @@ export default function Event() {
 
   const getAllEventPublic = async () => {
     const res = await getAllEventPublicAPI(startIndex);
-    console.log(res);
-    // if (res) {
-    //   dispatch(setEventPublicList(res));
-    // }
+    if (res?.status == 200) {
+      dispatch(setEventPublicList(res?.data));
+    }
   };
   const onClick = () => {
     dispatch(setStartIndex(startIndex + 8));

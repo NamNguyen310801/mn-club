@@ -7,16 +7,25 @@ import * as UserService from "./_utils/services/user.api";
 import { useEffect } from "react";
 import { getAllClubPublicAPI } from "./_utils/services/club.api";
 import { setClubPublicList } from "./_utils/store/club.slice";
+import { setEventPublicList } from "./_utils/store/event.slice";
+import { getAllEventPublicAPI } from "./_utils/services/event.api";
 
 export default function Home() {
   const dispatch = useDispatch();
   const userAuth = useSelector((state) => state.auth.userAuth);
+  const eventPublicList = useSelector((state) => state.event.eventPublicList);
+
   useEffect(() => {
     const { decoded, accessToken, refreshToken } = handleDecoded();
     if (decoded?.id && !userAuth?.email) {
       handleGetDetailsUser(decoded?.id, accessToken, refreshToken);
     }
   }, []);
+
+  useEffect(() => {
+    getAllEventPublic();
+  }, []);
+
   const handleGetDetailsUser = async (id, accessToken, refreshToken) => {
     const res = await UserService.getDetailUserAPI(id, accessToken);
     dispatch(setUserAuth(res?.data));
@@ -30,22 +39,23 @@ export default function Home() {
 
   const getAllClubPublic = async () => {
     const res = await getAllClubPublicAPI();
-    if (res) {
-      dispatch(setClubPublicList(res));
+    if (res?.status == 200) {
+      dispatch(setClubPublicList(res?.data));
     }
   };
-  // const getAllEventPublic = async () => {
-  //   const res = await getAllEventPublicAPI();
-  //   if (res) {
-  //     dispatch(setEventList(res));
-  //   }
-  // };
+  const getAllEventPublic = async () => {
+    const res = await getAllEventPublicAPI();
+    if (res?.status == 200) {
+      dispatch(setEventPublicList(res?.data));
+    }
+  };
+
   return (
     <>
       <Header />
       <div className="container flex flex-col">
         <Hero />
-        <Event />
+        <Event eventList={eventPublicList} />
         <Testimonials />
       </div>
       <Footer />

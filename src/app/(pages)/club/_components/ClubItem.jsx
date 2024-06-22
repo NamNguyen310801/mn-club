@@ -10,7 +10,7 @@ export default function ClubItem({ item, hidden = false }) {
       className="relative flex-shrink-0 flex flex-col gap-y-3 cursor-pointer">
       <div className="pt-[56.25%] block object-cover rounded-[16px] relative w-full group overflow-hidden">
         <Image
-          src={process.env.NEXT_PUBLIC_BACKEND_BASE_URL + item?.avatar}
+          src={item?.avatar}
           alt={item?.name}
           width={160}
           height={90}

@@ -8,10 +8,15 @@ export default function EventList({ eventList, onClick }) {
         Danh sách sự kiện
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-1 md:gap-2 xl:gap-3 py-4 xl:py-6">
-        <EventItem />
+        {eventList?.map((item, index) => (
+          <EventItem item={item} key={index} />
+        ))}
       </div>
       <div className="flex items-center justify-center">
-        <Button className="max-w-40" onClick={onClick}>
+        <Button
+          className="max-w-40"
+          onClick={onClick}
+          disabled={eventList?.length <= 20}>
           Xem Thêm
         </Button>
       </div>

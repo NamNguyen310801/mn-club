@@ -23,11 +23,9 @@ export default function Club() {
 
   const getAllClubPublic = async () => {
     const res = await getAllClubPublicAPI(startIndex);
-    console.log(res);
-
-    // if (res) {
-    //   dispatch(setClubPublicList(res));
-    // }
+    if (res?.status == 200) {
+      dispatch(setClubPublicList(res?.data));
+    }
   };
   const onClick = () => {
     dispatch(setStartIndex(startIndex + 8));

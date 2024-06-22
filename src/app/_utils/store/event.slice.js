@@ -1,21 +1,26 @@
 const { createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
-  eventList: null,
+  eventPublicList: null,
   popularEventList: null,
+  startIndex: 0,
 };
 const eventSlice = createSlice({
   name: "event",
   initialState,
   reducers: {
-    setEventList: (state, action) => {
-      state.eventList = action.payload;
+    setEventPublicList: (state, action) => {
+      state.eventPublicList = action.payload;
     },
     setPopularEventList: (state, action) => {
       state.popularEventList = action.payload;
     },
+    setStartIndex: (state, action) => {
+      state.startIndex = action.payload;
+    },
   },
 });
 
-export const { setEventList, setPopularEventList } = eventSlice.actions;
+export const { setEventPublicList, setPopularEventList, setStartIndex } =
+  eventSlice.actions;
 export default eventSlice.reducer;

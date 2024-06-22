@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 
-export default function StudentTable() {
+export default function StudentTable({ studentList }) {
   const [rowId, setRowId] = useState(null);
   const getRole = (role) => {
     if (role === 1) return "admin";

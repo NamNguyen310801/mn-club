@@ -5,6 +5,8 @@ import { handleDecoded } from "./_utils/functions/functions";
 import { setJwtAuth, setUserAuth } from "./_utils/store/auth.slice";
 import * as UserService from "./_utils/services/user.api";
 import { useEffect } from "react";
+import { getAllClubPublicAPI } from "./_utils/services/club.api";
+import { setClubPublicList } from "./_utils/store/club.slice";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -25,6 +27,19 @@ export default function Home() {
       })
     );
   };
+
+  const getAllClubPublic = async () => {
+    const res = await getAllClubPublicAPI();
+    if (res) {
+      dispatch(setClubPublicList(res));
+    }
+  };
+  // const getAllEventPublic = async () => {
+  //   const res = await getAllEventPublicAPI();
+  //   if (res) {
+  //     dispatch(setEventList(res));
+  //   }
+  // };
   return (
     <>
       <Header />

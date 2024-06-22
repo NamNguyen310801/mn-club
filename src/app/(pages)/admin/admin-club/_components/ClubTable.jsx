@@ -1,42 +1,40 @@
-"use client";
 import MUIDataTable from "mui-datatables";
-import { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
-export default function ClubTable() {
-  const [club, setClub] = useState();
+import EditClubDialog from "./EditClubDialog";
+export default function ClubTable({ clubList }) {
   const columns = [
     {
       name: "id",
       label: "NO",
     },
     {
-      name: "email",
+      name: "code",
       label: "Tên Viết Tắt",
     },
     {
-      name: "age",
-      label: "Tên Câu Lạc Bộ",
+      name: "name",
+      label: "Tên CLB",
     },
     {
-      name: "firstName",
+      name: "manager_id",
       label: "Chủ nhiệm",
     },
 
     {
-      name: "lastName",
-      label: "Loại Câu Lạc Bộ",
+      name: "club_category_id",
+      label: "Loại CLB",
     },
     {
-      name: "lastName",
-      label: "Ngày thành Lập",
+      name: "founding_date",
+      label: "Ngày Thành Lập",
     },
     {
-      name: "lastName",
-      label: "Số Lượng Thành Viên",
+      name: "member_count",
+      label: "SL Thành Viên",
     },
     {
-      name: "enable",
+      name: "status",
       label: "Trạng thái",
       options: {
         customBodyRender: (value) => <div>{value ? "Active" : "Inactive"}</div>,
@@ -63,7 +61,57 @@ export default function ClubTable() {
         },
       },
     },
-
+    {
+      name: "avatar",
+      label: "Avatar",
+      options: {
+        customBodyRender: (value) => (
+          <img
+            src={value}
+            alt="avatar"
+            className="w-10 h-10 rounded-full bg-center bg-contain overflow-hidden"
+          />
+        ),
+        filter: false,
+      },
+    },
+    {
+      name: "email",
+      label: "Email",
+      options: {
+        customBodyRender: (value) => (
+          <div className="text-wrap max-w-20 text-ellipsis overflow-hidden">
+            {value}
+          </div>
+        ),
+      },
+    },
+    {
+      name: "website",
+      label: "Website",
+      options: {
+        customBodyRender: (value) => (
+          <div className="text-wrap max-w-20 text-ellipsis overflow-hidden">
+            {value}
+          </div>
+        ),
+      },
+    },
+    {
+      name: "description",
+      label: "Mô tả",
+      options: {
+        customBodyRender: (value) => (
+          <div className="text-wrap max-w-20 text-ellipsis line-clamp-2">
+            {value}
+          </div>
+        ),
+      },
+    },
+    {
+      name: "fund_amount",
+      label: "Quỹ",
+    },
     {
       name: "",
       label: "",
@@ -75,7 +123,7 @@ export default function ClubTable() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div className="flex items-center justify-between px-4">
-              {/* <EditUserDialog dataRow={data[tableMeta?.rowIndex]} /> */}
+              <EditClubDialog dataRow={data[tableMeta?.rowIndex]} />
               <DeleteAlertDialog
                 onClick={() => handleDelete(tableMeta?.rowIndex)}
               />
@@ -89,60 +137,35 @@ export default function ClubTable() {
   const data = [
     {
       id: 1,
-      firstName: "Emily",
-      lastName: "Johnson",
-      maidenName: "Smith",
-      age: 28,
-      gender: "female",
-      email: "emily.johnson@x.dummyjson.com",
-      phone: "+81 965-431-3024",
-      username: "emilys",
-      password: "emilyspass",
-      birthDate: "1996-5-30",
-      image:
+      manager_id: "0231",
+      name: "aa",
+      code: "aa",
+      founding_date: "aa",
+      club_category_id: 1,
+      status: false,
+      member_count: 20,
+      avatar:
         "https://images.unsplash.com/photo-1718073725822-96f864f08837?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      bloodGroup: "O-",
-      height: 193.24,
-      weight: 63.16,
-      role: "admin",
+      website: "",
+      description: "",
+      fund_amount: 230000,
+      email: "",
     },
     {
       id: 2,
-      firstName: "Emlily",
-      lastName: "Johnson",
-      maidenName: "Smith",
-      age: 28,
-      gender: "female",
-      email: "emily.johnson@x.dummyjson.com",
-      phone: "+81 965-431-3024",
-      username: "emilys",
-      password: "emilyspass",
-      birthDate: "1996-5-30",
-      image:
+      manager_id: "0321",
+      name: "AMN",
+      code: "AA",
+      founding_date: "0321",
+      club_category_id: 1,
+      status: true,
+      member_count: 10,
+      avatar:
         "https://images.unsplash.com/photo-1718073725822-96f864f08837?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      bloodGroup: "O-",
-      height: 193.24,
-      weight: 63.16,
-      role: "admin",
-    },
-    {
-      id: 3,
-      firstName: "Amily",
-      lastName: "Johnson",
-      maidenName: "Smith",
-      age: 28,
-      gender: "female",
-      email: "emily.johnson@x.dummyjson.com",
-      phone: "+81 965-431-3024",
-      username: "emilys",
-      password: "emilyspass",
-      birthDate: "1996-5-30",
-      image:
-        "https://images.unsplash.com/photo-1718152220071-dc4396f654fc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      bloodGroup: "O-",
-      height: 193.24,
-      weight: 63.16,
-      role: "admin",
+      website: "emily.johnson@x.com",
+      description: "emily.johnson@x.com",
+      fund_amount: 230000,
+      email: "emily.johnson@x.com",
     },
   ];
   const options = {

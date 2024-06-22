@@ -1,19 +1,33 @@
 "use client";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AdminHeader from "../_components/AdminHeader";
 import ClubTop from "./_components/ClubTop";
 import ClubTable from "./_components/ClubTable";
+import { useEffect } from "react";
+import { getAllClubAPI } from "@/app/_utils/services/club.api";
+import { setClubList } from "@/app/_utils/store/admin.slice";
 
 export default function AdminClub() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.userAuth);
-  const userList = useSelector((state) => state.admin.userList);
+  const clubList = useSelector((state) => state.admin.clubList);
+  const isGetClubList = useSelector((state) => state.admin.isGetClubList);
+  useEffect(() => {
+    getAllClub();
+  }, [isGetClubList]);
 
+  const getAllClub = async () => {
+    const res = await getAllClubAPI();
+    if (res?.status) {
+      dispatch(setClubList(res));
+    }
+  };
   return (
     <div className="w-full flex flex-col">
       <AdminHeader user={user} title="Quản Lý Câu Lạc Bộ" />
       <main className="w-full flex flex-col">
         <ClubTop />
-        <ClubTable />
+        <ClubTable clubList={clubList} />
       </main>
     </div>
   );

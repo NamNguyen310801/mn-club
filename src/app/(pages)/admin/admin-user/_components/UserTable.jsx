@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import EditUserDialog from "./EditUserDialog";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
-export default function UserTable() {
+export default function UserTable({ userList }) {
   const [rowId, setRowId] = useState(null);
   const getRole = (role) => {
     if (role === 1) return "admin";

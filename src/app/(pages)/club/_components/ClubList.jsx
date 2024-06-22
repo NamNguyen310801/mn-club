@@ -8,12 +8,12 @@ export default function ClubList({ clubList, onClick }) {
         Danh sách câu lạc bộ
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-1 md:gap-2 xl:gap-3 py-4 xl:py-6">
-        <ClubItem />
-        <ClubItem />
-        <ClubItem />
+        {clubList?.map((item, index) => (
+          <ClubItem item={item} key={index} />
+        ))}
       </div>
       <div className="flex items-center justify-center">
-        <Button className="max-w-40" onClick={() => console.log("a")}>
+        <Button className="max-w-40" onClick={onClick}>
           Xem Thêm
         </Button>
       </div>

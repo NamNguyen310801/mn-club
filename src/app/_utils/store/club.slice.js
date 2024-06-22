@@ -1,21 +1,34 @@
 const { createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
-  clubList: null,
-  popularClubList: null,
+  clubPublicList: null,
+  recruitmentClubList: null,
+  startIndex: 0,
 };
 const clubSlice = createSlice({
   name: "club",
   initialState,
   reducers: {
-    setClubList: (state, action) => {
-      state.clubList = action.payload;
+    setClubPublicList: (state, action) => {
+      state.clubPublicList = action.payload;
     },
-    setPopularClubList: (state, action) => {
-      state.popularClubList = action.payload;
+    setStartIndex: (state, action) => {
+      state.startIndex = action.payload;
+    },
+    setRecruitmentClubList: (state, action) => {
+      state.recruitmentClubList = action.payload;
+    },
+
+    resetClubPublicList: (state) => {
+      state.clubPublicList = null;
     },
   },
 });
 
-export const { setClubList, setPopularClubList } = clubSlice.actions;
+export const {
+  setClubPublicList,
+  setStartIndex,
+  setRecruitmentClubList,
+  resetClubPublicList,
+} = clubSlice.actions;
 export default clubSlice.reducer;

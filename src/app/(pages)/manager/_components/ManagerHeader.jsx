@@ -27,7 +27,7 @@ export default function ManagerHeader({ user = null, title = "" }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel className="text-center text-lg">
-                My Message
+                Tin nhắn của tôi
               </DropdownMenuLabel>
               <ul className="w-[300px] flex flex-col gap-y-1 max-h-[300px] overflow-y-scroll">
                 <li>
@@ -58,7 +58,7 @@ export default function ManagerHeader({ user = null, title = "" }) {
               </ul>
               <div className="w-full mt-1">
                 <Button className="w-full bg-blue-600 hover:bg-blue-500">
-                  View all Message
+                  Xem tất cả
                 </Button>
               </div>
             </DropdownMenuContent>
@@ -75,7 +75,7 @@ export default function ManagerHeader({ user = null, title = "" }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel className="text-center text-lg">
-                My Notify (4)
+                Thông báo của tôi (4)
               </DropdownMenuLabel>
               <ul className="w-[300px] flex flex-col gap-y-1 max-h-[300px] overflow-y-scroll">
                 <li>
@@ -106,7 +106,7 @@ export default function ManagerHeader({ user = null, title = "" }) {
               </ul>
               <div className="w-full mt-1">
                 <Button className="w-full bg-blue-600 hover:bg-blue-500">
-                  View all notifications
+                  Xem tất cả
                 </Button>
               </div>
             </DropdownMenuContent>

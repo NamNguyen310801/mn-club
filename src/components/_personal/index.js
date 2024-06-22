@@ -13,4 +13,5 @@ export { default as InputOTPConfirm } from "./InputOTPConfirm";
 export { default as ButtonEdit } from "./ButtonEdit";
 export { default as ButtonDelete } from "./ButtonDelete";
 export { default as Success } from "./Success";
+export { default as TextEditor } from "./TextEditor";
 export { default as VerifyAccountAlert } from "./VerifyAccountAlert";

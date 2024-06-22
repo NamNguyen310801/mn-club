@@ -11,7 +11,7 @@ export default function EventList({ eventList, onClick }) {
         <EventItem />
       </div>
       <div className="flex items-center justify-center">
-        <Button className="max-w-40" onClick={() => console.log("a")}>
+        <Button className="max-w-40" onClick={onClick}>
           Xem Thêm
         </Button>
       </div>

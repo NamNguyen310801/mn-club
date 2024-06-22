@@ -22,8 +22,7 @@ export default function DeleteAlertDialog({ onClick }) {
         <AlertDialogHeader>
           <AlertDialogTitle>Bạn có chắc muốn xóa không?</AlertDialogTitle>
           <AlertDialogDescription>
-            Hành động này không thể được hoàn tác. Thao tác này sẽ xóa vĩnh viễn
-            tài khoản của bạn và xóa dữ liệu của bạn khỏi máy chủ của chúng tôi.
+            Hành động này không thể được hoàn tác.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

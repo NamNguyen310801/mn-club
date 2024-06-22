@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import moment from "moment";
-export default function DatePicker({ date, setDate, disabled = true }) {
+export default function DatePicker({ date, setDate, disabled = true, title }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -23,7 +23,7 @@ export default function DatePicker({ date, setDate, disabled = true }) {
           {Boolean(date) ? (
             moment(date).format("L")
           ) : (
-            <span>Chọn ngày sinh</span>
+            <span>{title || "Chọn ngày sinh"}</span>
           )}
         </Button>
       </PopoverTrigger>

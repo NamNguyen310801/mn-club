@@ -2,10 +2,14 @@
 import { FaUserCircle } from "react-icons/fa";
 
 import AdminHeader from "./_components/AdminHeader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import StatItem from "./_components/StatItem";
+import { useEffect } from "react";
+import { getAllUserAPI } from "@/app/_utils/services/user.api";
+import { setUserList } from "@/app/_utils/store/admin.slice";
 
 export default function Admin() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.userAuth);
   const userList = useSelector((state) => state.admin.userList);
   const color = ["#1da256", "#48d483"];
@@ -13,6 +17,18 @@ export default function Admin() {
   const color2 = ["#2c78e5", "#60aff5"];
   const color3 = ["#e1950e", "#f3cd29"];
   const color4 = ["#c51d2b", "#d59ca5"];
+  useEffect(() => {
+    if (!userList) {
+      getAllUser();
+    }
+  }, [userList]);
+
+  const getAllUser = async () => {
+    const res = await getAllUserAPI();
+    if (res) {
+      dispatch(setUserList(res));
+    }
+  };
   return (
     <div className="w-full flex flex-col">
       <AdminHeader user={user} title="Quản Lý Hệ Thống" />

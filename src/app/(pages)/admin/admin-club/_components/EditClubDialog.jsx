@@ -1,7 +1,7 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ButtonAdd, DatePicker, FormItem } from "@/components/_personal";
-import { useState } from "react";
+import { ButtonEdit, DatePicker, FormItem } from "@/components/_personal";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -16,28 +16,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getBase64 } from "@/app/_utils/functions/functions";
-import { createClubAPI } from "@/app/_utils/services/club.api";
+import { updateClubAPI } from "@/app/_utils/services/club.api";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsGetClubList } from "@/app/_utils/store/admin.slice";
-export default function ClubTop() {
+export default function EditClubDialog({ dataRow }) {
   const dispatch = useDispatch();
   const isGetClubList = useSelector((state) => state.admin.isGetClubList);
-
-  const defaultData = {
-    manager_id: "",
-    name: "",
-    code: "",
-    founding_date: "",
-    club_category_id: 1,
-    status: "",
-    member_count: 0,
-    avatar: "",
-    website: "",
-    description: "",
-    fund_amount: "",
-    email: "",
-  };
-  const [data, setData] = useState(defaultData);
+  const [data, setData] = useState();
+  useEffect(() => {
+    setData(dataRow);
+  }, [dataRow]);
   const handleUploadImage = async (e) => {
     const image = await getBase64(e.target.files[0]);
     setData((prev) => ({ ...prev, avatar: image }));
@@ -46,25 +34,25 @@ export default function ClubTop() {
     console.log(data);
     toast("submit");
   };
-  const createClub = async () => {
-    const res = await createClubAPI(data);
-    if (res?.status == true) {
-      toast("Thêm mới câu lạc bộ thành công");
+  const updateClub = async () => {
+    const res = await updateClubAPI(data);
+    if (res.status == true) {
+      toast("Cập nhật thành công!");
       dispatch(setIsGetClubList(!isGetClubList));
     } else {
-      toast("Thêm mới câu lạc bộ thất bại");
+      toast("Cập nhật thất bại!");
     }
   };
   return (
     <Dialog className="bg-black/20">
       <div className="w-full flex p-4 items-center justify-between">
         <DialogTrigger asChild>
-          <ButtonAdd />
+          <ButtonEdit />
         </DialogTrigger>
       </div>
       <DialogContent className="flex flex-col gap-y-2 lg:min-w-[620px] min-h-[550px] bg-blue-200/90">
         <h2 className="text-center font-bold text-xl capitalize">
-          Thêm mới Câu lạc bộ
+          Cập nhật Câu lạc bộ
         </h2>
         <form className="grid grid-cols-2 gap-3 mt-2 text-sm">
           {/* Name */}

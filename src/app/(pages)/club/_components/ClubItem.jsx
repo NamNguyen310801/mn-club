@@ -1,8 +1,11 @@
+import Link from "next/link";
 import React from "react";
 
 export default function ClubItem({ item, hidden = false }) {
   return (
-    <div className="relative flex-shrink-0 flex flex-col gap-y-3 cursor-pointer">
+    <Link
+      href={`/club/${item?.id}`}
+      className="relative flex-shrink-0 flex flex-col gap-y-3 cursor-pointer">
       <div className="pt-[56.25%] block object-cover rounded-[16px] relative w-full group overflow-hidden">
         <img
           src={
@@ -21,6 +24,6 @@ export default function ClubItem({ item, hidden = false }) {
           <p className="text-ellipsis line-clamp-3 text-primary">Mô Tả Ngắn </p>
         </div>
       )}
-    </div>
+    </Link>
   );
 }

@@ -6,7 +6,7 @@ import EventTable from "./_components/EventTable";
 
 export default function AdminEvent() {
   const user = useSelector((state) => state.auth.userAuth);
-  const userList = useSelector((state) => state.admin.userList);
+  const eventList = useSelector((state) => state.event.eventList);
 
   return (
     <div className="w-full flex flex-col">

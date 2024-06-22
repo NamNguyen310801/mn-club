@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
+import EditEventDialog from "./EditEventDialog";
+import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 
 export default function EventTable() {
   const [rowId, setRowId] = useState(null);
@@ -63,23 +65,31 @@ export default function EventTable() {
         customBodyRender: (value) => <div>{value ? "Active" : "Inactive"}</div>,
       },
     },
-  ];
-  const rows = [
     {
-      user_id: 1,
-      username: "asd",
-      email: "Jon@gmail.com",
-      first_name: "Nguyen",
-      last_name: "Dat",
-      address: "Ha Noi",
-      phone_number: "0235460844",
-      avatar: "",
-      student_code: "NKKJJF704",
-      description: "Lorem aksldah asbngj mafo",
-      enable: true,
-      role_id: 4,
+      name: "",
+      label: "",
+      options: {
+        filter: false,
+        sort: false,
+        empty: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <div className="flex items-center justify-between px-4">
+              <EditEventDialog dataRow={data[tableMeta?.rowIndex]} />
+              <DeleteAlertDialog
+                onClick={() => handleDelete(tableMeta?.rowIndex)}
+              />
+            </div>
+          );
+        },
+      },
     },
   ];
+  const handleDelete = (rowIndex) => {
+    const rowData = data[rowIndex];
+    console.log("Delete action for row: ", rowData);
+  };
+
   const options = {
     selectableRows: "none",
     rowsPerPage: 5,

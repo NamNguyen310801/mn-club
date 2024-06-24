@@ -8,16 +8,34 @@ import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import * as XLSX from "xlsx";
 export default function StudentTop() {
   const [progress, setProgress] = useState(0);
+  const [data, setData] = useState([]);
   const onImport = () => {
     console.log(data);
     toast("submit");
   };
-  useEffect(() => {
-    const timer = setTimeout(() => setProgress(66), 500);
-    return () => clearTimeout(timer);
-  }, []);
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const binaryString = event.target.result;
+      const workbook = XLSX.read(binaryString, { type: "binary" });
+
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+      setData(jsonData);
+      const timer = setInterval(() => setProgress((pre) => pre + 25), 500);
+      if (progress === 100) return clearInterval(timer);
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
   return (
     <Dialog className="bg-black/20">
       <div className="w-full flex p-4 items-center justify-between">
@@ -36,8 +54,8 @@ export default function StudentTop() {
             type="file"
             placeholder={"File UpLoad"}
             className="border-b"
-            // value={value}
-            // onChange={(e) => onChange(e)}
+            accept=".xls,.xlsx,.csv"
+            onChange={handleFileUpload}
           />
         </div>
         <Progress value={progress} className="w-full mt-4" />

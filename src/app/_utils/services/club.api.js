@@ -58,3 +58,11 @@ export const getClubDetailsAPI = async (id) => {
     return error;
   }
 };
+export const deleteClubAPI = async (id) => {
+  try {
+    const res = await axiosUrl.delete(ROUTER_API.deleteClubURL + "/" + id);
+    return res;
+  } catch (error) {
+    return error;
+  }
+};

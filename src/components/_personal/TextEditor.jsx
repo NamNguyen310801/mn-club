@@ -37,17 +37,14 @@ export default function TextEditor({ value, setValue }) {
     "align",
   ];
   return (
-    <div>
-      <ReactQuill
-        theme="snow"
-        modules={modules}
-        formats={formats}
-        value={value}
-        onChange={setValue}
-      />
-      <div className="text-black">
-        <p dangerouslySetInnerHTML={{ __html: value }}></p>
-      </div>
-    </div>
+    <ReactQuill
+      theme="snow"
+      modules={modules}
+      formats={formats}
+      value={value}
+      onChange={setValue}
+      placeholder="Viết nội dung..."
+      className="h-72 mb-12"
+    />
   );
 }

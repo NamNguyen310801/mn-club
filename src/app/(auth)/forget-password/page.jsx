@@ -76,14 +76,21 @@ export default function ForgetPassword() {
     }
   };
   const changePassword = async () => {
-    const res = await changePasswordAPI();
-    if (res?.status == 200) {
-      toast("Thay đổi mật khẩu thành công!");
-      setTimeout(() => {
-        router.push("/sign-in");
-      }, 500);
+    if (
+      data?.newPassword?.length > 6 &&
+      data?.cfNewPassword === data?.newPassword
+    ) {
+      const res = await changePasswordAPI(data);
+      if (res?.status == 200) {
+        toast("Thay đổi mật khẩu thành công!");
+        setTimeout(() => {
+          router.push("/sign-in");
+        }, 500);
+      } else {
+        toast("Thay đổi mật khẩu không thành công!");
+      }
     } else {
-      toast("Thay đổi mật khẩu không thành công!");
+      toast("Mật khẩu không khớp!");
     }
   };
   return (

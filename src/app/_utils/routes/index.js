@@ -4,9 +4,9 @@ const ROUTER_API = {
   signIn: "/api/Common/Login/Login",
   logout: "",
   forgetPasswordURL: "/api/ManageAccount/forgot-password",
+  verifyOtpURL: "/",
   changePasswordURL: "/api/ManageAccount/change-password",
   verifyAccountURL: "/",
-  verifyOtpURL: "/",
   refreshTokenURL: "/",
 
   // User
@@ -23,19 +23,24 @@ const ROUTER_API = {
   getClubDetailsURL: "/Club/GetClubDetail",
   getAllClubPublicURL: "Club/GetAllClubPublic?startIndex=",
   getClubsByEventType: "Club/GetClubsbyEventtype?eventTypeId=",
+  deleteClubURL: "/",
 
   // Event
   createEventURL: "/api/Event/CreateEvent",
   getAllEventURL: "/api/Event/GetAllEvent",
   getAllEventPublicURL: "api/Event/GetAllEvent?startIndex=",
+  getAllPopularEventURL: "api/Event/GetAllEvent?startIndex=",
   getEventFeaturedURL: "/api/Event/GetEventfeatured",
   getDetailEventURL: "/api/Event/Detail",
   getEventByClubURL: "/api/Event/GetEventbyClub",
+  deleteEventURL: "",
 
   // News
   createNewsURL: "/",
   getAllNewsURL: "/",
   getDetailNewsURL: "/",
+  getAllNewsPublicURL: "",
+  deleteNewsURL: "",
 
   // Student
   getAllStudentURL: "",

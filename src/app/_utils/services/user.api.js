@@ -8,7 +8,7 @@ export const getDetailUserAPI = async (id, access_token) => {
         Authorization: "Bearer " + access_token,
       },
     });
-    return res.data;
+    return res;
   } catch (error) {
     return error;
   }
@@ -21,7 +21,7 @@ export const updateUserAPI = async (id, data, access_token) => {
         Authorization: `Bearer ${access_token}`,
       },
     });
-    return res.data;
+    return res;
   } catch (error) {
     return error;
   }
@@ -31,20 +31,20 @@ export const updateUserAPI = async (id, data, access_token) => {
 export const getAllUserAPI = async () => {
   try {
     const res = await axiosUrl.get(ROUTER_API.getAllUserURL);
-    return res.data;
+    return res;
   } catch (error) {
     return error;
   }
 };
 // deleteUser
-export const deleteUser = async (id, access_token) => {
+export const deleteUserAPI = async (id, access_token) => {
   try {
     const res = await axiosUrl.delete(`${ROUTER_API.deleteUserURL}/${id}`, {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     });
-    return res.data;
+    return res;
   } catch (error) {
     return error;
   }
@@ -58,7 +58,7 @@ export const createUserAPI = async (data, access_token) => {
         Authorization: `Bearer ${access_token}`,
       },
     });
-    return res.data;
+    return res;
   } catch (error) {
     return error;
   }

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 
-export default function NewsTable() {
+export default function NewsTable({ newsList }) {
   const [rowId, setRowId] = useState(null);
   const getRole = (role) => {
     if (role === 1) return "admin";

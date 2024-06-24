@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import EditEventDialog from "./EditEventDialog";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 
-export default function EventTable() {
+export default function EventTable({ eventList, onDelete }) {
   const [rowId, setRowId] = useState(null);
   const getRole = (role) => {
     if (role === 1) return "admin";
@@ -13,18 +13,6 @@ export default function EventTable() {
     else if (role == 3) return "basic";
     else return "guest";
   };
-  const data = [
-    {
-      id: 1,
-      lastName: "Johnson",
-      student_code: "aaas",
-    },
-    {
-      id: 2,
-      lastName: "Johnson",
-      student_code: "asd",
-    },
-  ];
   const columns = [
     {
       name: "id",
@@ -85,9 +73,9 @@ export default function EventTable() {
       },
     },
   ];
-  const handleDelete = (rowIndex) => {
+  const handleDelete = async (rowIndex) => {
     const rowData = data[rowIndex];
-    console.log("Delete action for row: ", rowData);
+    await onDelete(rowData);
   };
 
   const options = {
@@ -153,7 +141,7 @@ export default function EventTable() {
       <ThemeProvider theme={getMuiTheme()}>
         <MUIDataTable
           title={""}
-          data={data}
+          data={eventList || []}
           columns={columns}
           options={options}
         />

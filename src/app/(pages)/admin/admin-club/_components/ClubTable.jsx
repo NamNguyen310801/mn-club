@@ -2,7 +2,7 @@ import MUIDataTable from "mui-datatables";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 import EditClubDialog from "./EditClubDialog";
-export default function ClubTable({ clubList }) {
+export default function ClubTable({ clubList, onDelete }) {
   const columns = [
     {
       name: "id",
@@ -134,40 +134,6 @@ export default function ClubTable({ clubList }) {
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      manager_id: "0231",
-      name: "aa",
-      code: "aa",
-      founding_date: "aa",
-      club_category_id: 1,
-      status: false,
-      member_count: 20,
-      avatar:
-        "https://images.unsplash.com/photo-1718073725822-96f864f08837?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      website: "",
-      description: "",
-      fund_amount: 230000,
-      email: "",
-    },
-    {
-      id: 2,
-      manager_id: "0321",
-      name: "AMN",
-      code: "AA",
-      founding_date: "0321",
-      club_category_id: 1,
-      status: true,
-      member_count: 10,
-      avatar:
-        "https://images.unsplash.com/photo-1718073725822-96f864f08837?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      website: "emily.johnson@x.com",
-      description: "emily.johnson@x.com",
-      fund_amount: 230000,
-      email: "emily.johnson@x.com",
-    },
-  ];
   const options = {
     selectableRows: "none",
     rowsPerPage: 5,
@@ -226,17 +192,40 @@ export default function ClubTable({ clubList }) {
         },
       },
     });
-
-  const handleDelete = (rowIndex) => {
+  const data = [
+    {
+      id: 1,
+      username: "Emily",
+      lastName: "Johnson",
+      student_code: "aaas",
+      email: "asdas.johnson@x.dummyjson.com",
+      phone_number: "0333460843",
+      enable: false,
+      password: "aaasdasd",
+    },
+    {
+      id: 2,
+      username: "Emlily",
+      lastName: "Johnson",
+      student_code: "asd",
+      email: "emily.johnson@x.dummyjson.com",
+      phone_number: "0235460844",
+      enable: true,
+      password: "aaasdasd",
+      avatar:
+        "https://images.unsplash.com/photo-1712847333437-f9386beb83e4?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+  ];
+  const handleDelete = async (rowIndex) => {
     const rowData = data[rowIndex];
-    console.log("Delete action for row: ", rowData);
+    await onDelete(rowData);
   };
   return (
     <div className="w-full h-full">
       <ThemeProvider theme={getMuiTheme()}>
         <MUIDataTable
           title={""}
-          data={data}
+          data={clubList || []}
           columns={columns}
           options={options}
         />

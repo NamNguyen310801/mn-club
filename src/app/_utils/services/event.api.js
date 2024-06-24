@@ -37,6 +37,16 @@ export const getAllEventPublicAPI = async (index = 0) => {
     return error;
   }
 };
+export const getAllPopularEventAPI = async (index = 0) => {
+  try {
+    const res = await axiosUrl.get(ROUTER_API.getAllPopularEventURL + index, {
+      index,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
 export const getAllEventFeaturedAPI = async () => {
   try {
     const res = await axiosUrl.get(ROUTER_API.getEventFeaturedURL);
@@ -53,9 +63,19 @@ export const getEventDetailsAPI = async (id) => {
     return error;
   }
 };
+
 export const getEventByClubAPI = async (id) => {
   try {
     const res = await axiosUrl.get(ROUTER_API.getEventByClubURL + "/" + id);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteEventAPI = async (id) => {
+  try {
+    const res = await axiosUrl.delete(ROUTER_API.deleteEventURL + "/" + id);
+    return res;
   } catch (error) {
     return error;
   }

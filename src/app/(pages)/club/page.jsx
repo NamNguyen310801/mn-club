@@ -4,9 +4,13 @@ import ClubList from "./_components/ClubList";
 import PopularCLub from "./_components/PopularCLub";
 import Autoplay from "embla-carousel-autoplay";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllClubPublicAPI } from "@/app/_utils/services/club.api";
+import {
+  getAllClubPublicAPI,
+  getClubsByEventTypeAPI,
+} from "@/app/_utils/services/club.api";
 import {
   setClubPublicList,
+  setRecruitmentClubList,
   setStartIndex,
 } from "@/app/_utils/store/club.slice";
 export default function Club() {
@@ -27,6 +31,12 @@ export default function Club() {
       dispatch(setClubPublicList(res?.data));
     }
   };
+  // const getClubsByEventType = async () => {
+  //   const res = await getClubsByEventTypeAPI(startIndex);
+  //   if (res?.status == 200) {
+  //     dispatch(setRecruitmentClubList(res?.data));
+  //   }
+  // };
   const onClick = () => {
     dispatch(setStartIndex(startIndex + 8));
   };

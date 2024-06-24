@@ -48,7 +48,7 @@ export default function ClubTop() {
   };
   const createClub = async () => {
     const res = await createClubAPI(data);
-    if (res?.status == true) {
+    if (res?.status == 200) {
       toast("Thêm mới câu lạc bộ thành công");
       dispatch(setIsGetClubList(!isGetClubList));
     } else {

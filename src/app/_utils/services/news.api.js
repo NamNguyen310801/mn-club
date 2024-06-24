@@ -16,9 +16,27 @@ export const getAllNewsAPI = async () => {
     return error;
   }
 };
+export const getAllNewsPublicAPI = async (index = 0) => {
+  try {
+    const res = await axiosUrl.get(ROUTER_API.getAllNewsPublicURL + index, {
+      index,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
 export const getNewsDetailsAPI = async (id) => {
   try {
     const res = await axiosUrl.get(ROUTER_API.getDetailNewsURL + "/" + id);
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+export const deleteNewsAPI = async (id) => {
+  try {
+    const res = await axiosUrl.delete(ROUTER_API.deleteNewsURL + "/" + id);
     return res;
   } catch (error) {
     return error;

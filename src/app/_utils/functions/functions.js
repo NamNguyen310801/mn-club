@@ -57,3 +57,20 @@ export const handleDecoded = () => {
   }
   return { decoded, accessToken, refreshToken };
 };
+
+export const getFile = (e) => {
+  const file = e.target.file[0];
+  if (!file) return;
+  const reader = new FileReader();
+  const fileType = file.type;
+  reader.onload = (event) => {
+    const content = event.target.result;
+    if (fileType === "application/json") {
+      const jsonContent = JSON.parse(content);
+      return JSON.stringify(jsonContent, null, 2);
+    } else if (fileType === "text/plain") {
+      return content;
+    }
+  };
+  reader.readAsText(file);
+};

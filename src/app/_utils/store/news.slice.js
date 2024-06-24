@@ -1,21 +1,26 @@
 const { createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
-  newsList: null,
+  newsPublicList: null,
   popularNewsList: null,
+  startIndex: 0,
 };
 const newsSlice = createSlice({
   name: "news",
   initialState,
   reducers: {
-    setNewsList: (state, action) => {
-      state.newsList = action.payload;
+    setNewsPublicList: (state, action) => {
+      state.newsPublicList = action.payload;
     },
     setPopularNewsList: (state, action) => {
       state.popularNewsList = action.payload;
     },
+    setStartIndex: (state, action) => {
+      state.startIndex = action.payload;
+    },
   },
 });
 
-export const { setNewsList, setPopularNewsList } = newsSlice.actions;
+export const { setNewsPublicList, setPopularNewsList, setStartIndex } =
+  newsSlice.actions;
 export default newsSlice.reducer;

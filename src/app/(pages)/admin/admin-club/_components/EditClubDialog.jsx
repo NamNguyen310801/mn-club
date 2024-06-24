@@ -36,7 +36,7 @@ export default function EditClubDialog({ dataRow }) {
   };
   const updateClub = async () => {
     const res = await updateClubAPI(data);
-    if (res.status == true) {
+    if (res.status == 200) {
       toast("Cập nhật thành công!");
       dispatch(setIsGetClubList(!isGetClubList));
     } else {

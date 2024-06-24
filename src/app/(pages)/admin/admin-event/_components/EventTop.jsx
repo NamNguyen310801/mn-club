@@ -4,7 +4,13 @@ import { ButtonAdd, FormItem } from "@/components/_personal";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { createEventAPI } from "@/app/_utils/services/event.api";
+import { setIsGetEventList } from "@/app/_utils/store/admin.slice";
+import { useDispatch, useSelector } from "react-redux";
 export default function EventTop() {
+  const dispatch = useDispatch();
+  const isGetEventList = useSelector((state) => state.admin.isGetEventList);
+
   const defaultData = {
     user_id: "",
     username: "",
@@ -25,6 +31,15 @@ export default function EventTop() {
   const onSubmit = () => {
     console.log(data);
     toast("submit");
+  };
+  const createEvent = async () => {
+    const res = await createEventAPI(data);
+    if (res?.status == 200) {
+      toast("Thêm mới sự kiện thành công!");
+      dispatch(setIsGetEventList(!isGetEventList));
+    } else {
+      toast("Thêm mới sự kiện thất bại!");
+    }
   };
   return (
     <Dialog className="bg-black/20">

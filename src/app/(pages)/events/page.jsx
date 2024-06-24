@@ -6,9 +6,13 @@ import PopularEvent from "./_components/PopularEvent";
 import EventList from "./_components/EventList";
 import {
   setEventPublicList,
+  setPopularEventList,
   setStartIndex,
 } from "@/app/_utils/store/event.slice";
-import { getAllEventPublicAPI } from "@/app/_utils/services/event.api";
+import {
+  getAllEventPublicAPI,
+  getAllPopularEventAPI,
+} from "@/app/_utils/services/event.api";
 export default function Event() {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
   const dispatch = useDispatch();
@@ -26,6 +30,12 @@ export default function Event() {
       dispatch(setEventPublicList(res?.data));
     }
   };
+  // const getAllPopularEvent = async () => {
+  //   const res = await getAllPopularEventAPI(startIndex);
+  //   if (res?.status == 200) {
+  //     dispatch(setPopularEventList(res?.data));
+  //   }
+  // };
   const onClick = () => {
     dispatch(setStartIndex(startIndex + 8));
   };

@@ -1,12 +1,9 @@
-"use client";
-import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import EditEventDialog from "./EditEventDialog";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 
 export default function EventTable({ eventList, onDelete }) {
-  const [rowId, setRowId] = useState(null);
   const getRole = (role) => {
     if (role === 1) return "admin";
     else if (role == 2) return "manage";
@@ -15,43 +12,55 @@ export default function EventTable({ eventList, onDelete }) {
   };
   const columns = [
     {
-      name: "id",
+      name: "eventID",
       label: "NO",
     },
 
     {
-      name: "lastName",
+      name: "name",
       label: "Tên Sự Kiện",
     },
     {
-      name: "student_code",
+      name: "approveStatus",
       label: "Trạng Thái Duyệt",
     },
     {
-      name: "student_code",
-      label: "Thời Gian",
+      name: "startDate",
+      label: "Thời Gian Bắt Đầu",
       options: {
-        customBodyRender: (value) => <div>{value}</div>,
+        customBodyRender: (value) => (
+          <div className="text-wrap max-w-20">
+            {moment(value).format("DD/MMM/yyy")}
+          </div>
+        ),
       },
     },
     {
-      name: "student_code",
+      name: "endDate",
+      label: "Thời Gian Kết Thúc",
+      options: {
+        customBodyRender: (value) => (
+          <div className="text-wrap max-w-20">
+            {moment(value).format("DD/MMM/yyy")}
+          </div>
+        ),
+      },
+    },
+    {
+      name: "location",
       label: "Địa Điểm",
     },
     {
-      name: "student_code",
+      name: "clubName",
       label: "Đơn Vị Tổ Chức",
     },
     {
-      name: "student_code",
+      name: "eventTypeId",
       label: "Loại Sự Kiện",
     },
     {
-      name: "enable",
+      name: "status",
       label: "Trạng thái",
-      options: {
-        customBodyRender: (value) => <div>{value ? "Active" : "Inactive"}</div>,
-      },
     },
     {
       name: "",

@@ -2,6 +2,7 @@ import MUIDataTable from "mui-datatables";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 import EditClubDialog from "./EditClubDialog";
+import moment from "moment";
 export default function ClubTable({ clubList, onDelete }) {
   const columns = [
     {
@@ -17,20 +18,35 @@ export default function ClubTable({ clubList, onDelete }) {
       label: "Tên CLB",
     },
     {
-      name: "manager_id",
+      name: "manager",
       label: "Chủ nhiệm",
+      options: {
+        customBodyRender: (value) => (
+          <div className="text-wrap max-w-20">{value?.fullName}</div>
+        ),
+      },
     },
 
     {
-      name: "club_category_id",
+      name: "setting",
       label: "Loại CLB",
+      options: {
+        customBodyRender: (value) => <div className="">{value?.value}</div>,
+      },
     },
     {
-      name: "founding_date",
+      name: "foundingDate",
       label: "Ngày Thành Lập",
+      options: {
+        customBodyRender: (value) => (
+          <div className="text-wrap max-w-20">
+            {moment(value).format("DD/MMM/yyy")}
+          </div>
+        ),
+      },
     },
     {
-      name: "member_count",
+      name: "memberCount",
       label: "SL Thành Viên",
     },
     {
@@ -109,7 +125,7 @@ export default function ClubTable({ clubList, onDelete }) {
       },
     },
     {
-      name: "fund_amount",
+      name: "fundAmount",
       label: "Quỹ",
     },
     {

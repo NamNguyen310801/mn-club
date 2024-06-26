@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useDispatch, useSelector } from "react-redux";
-export default function WorkTop() {
+export default function ReportTop() {
   const dispatch = useDispatch();
   const defaultData = {
     id: "",

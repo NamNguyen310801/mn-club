@@ -98,12 +98,12 @@ export const managerDashboardList = [
   },
   {
     href: "/manager-member",
-    name: "Quản lý Người Dùng",
+    name: "Quản lý Thành viên",
     icon: <Users color="#ffffff" />,
   },
   {
     href: "/manager-fund",
-    name: "Quản lý Sinh Viên",
+    name: "Quản lý Quỹ",
     icon: <Users color="#ffffff" />,
   },
   {

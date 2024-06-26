@@ -13,12 +13,12 @@ export default function Achievements() {
       label: "Id",
     },
     {
-      name: "email",
-      label: "Tên",
-    },
-    {
       name: "age",
       label: "Loại",
+    },
+    {
+      name: "female",
+      label: "Kỳ học",
     },
     {
       name: "firstName",

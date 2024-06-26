@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { useDispatch, useSelector } from "react-redux";
 import PopularEvent from "./_components/PopularEvent";
@@ -19,30 +19,36 @@ export default function Event() {
   const eventPublicList = useSelector((state) => state.event.eventPublicList);
   const popularEventList = useSelector((state) => state.event.popularEventList);
   const startIndex = useSelector((state) => state.event.startIndex);
-
+  const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     getAllEventPublic();
   }, [startIndex]);
 
   const getAllEventPublic = async () => {
+    setDisabled(true);
     const res = await getAllEventPublicAPI(startIndex);
     if (res?.status == 200) {
       dispatch(setEventPublicList(res?.data));
     }
+    setDisabled(false);
   };
-  // const getAllPopularEvent = async () => {
-  //   const res = await getAllPopularEventAPI(startIndex);
-  //   if (res?.status == 200) {
-  //     dispatch(setPopularEventList(res?.data));
-  //   }
-  // };
+  const getAllPopularEvent = async () => {
+    const res = await getAllPopularEventAPI(startIndex);
+    if (res?.status == 200) {
+      dispatch(setPopularEventList(res?.data)); //
+    }
+  };
   const onClick = () => {
     dispatch(setStartIndex(startIndex + 8));
   };
   return (
     <div className="container flex flex-col min-h-screen">
       <PopularEvent plugin={plugin} eventList={popularEventList} />
-      <EventList eventList={eventPublicList} onClick={onClick} />
+      <EventList
+        eventList={eventPublicList}
+        onClick={onClick}
+        disabled={disabled}
+      />
     </div>
   );
 }

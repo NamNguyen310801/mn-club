@@ -44,5 +44,10 @@ const ROUTER_API = {
 
   // Student
   getAllStudentURL: "",
+
+  // Department
+  getAllDepartmentURL: "",
+  createDepartmentURL: "",
+  deleteDepartmentURL: "",
 };
 export default ROUTER_API;

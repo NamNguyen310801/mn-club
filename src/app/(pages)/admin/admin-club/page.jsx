@@ -19,8 +19,8 @@ export default function AdminClub() {
 
   const getAllClub = async () => {
     const res = await getAllClubAPI();
-    if (res?.status) {
-      dispatch(setClubList(res));
+    if (res?.status == 200) {
+      dispatch(setClubList(res?.data));
     }
   };
   const handleDelete = async (rowData) => {

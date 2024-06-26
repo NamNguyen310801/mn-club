@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { useDispatch, useSelector } from "react-redux";
 import PopularNews from "./_components/PopularNews";

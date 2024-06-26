@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import ClubItem from "./ClubItem";
 
-export default function ClubList({ clubList, onClick }) {
+export default function ClubList({ clubList, onClick, disabled = false }) {
   return (
     <div className="w-full flex flex-col py-10 xl:py-20 gap-y-3 xl:gap-y-8">
       <h2 className="text-center text-[20px] md:text-[26px] uppercase mb-0 font-bold">
@@ -13,7 +13,10 @@ export default function ClubList({ clubList, onClick }) {
         ))}
       </div>
       <div className="flex items-center justify-center">
-        <Button className="max-w-40" onClick={onClick}>
+        <Button
+          className="max-w-40"
+          onClick={onClick}
+          disabled={disabled || clubList?.length >= 20}>
           Xem Thêm
         </Button>
       </div>

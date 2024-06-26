@@ -1,7 +1,7 @@
 import { EventItem } from "@/components/_personal";
 import { Button } from "@/components/ui/button";
 
-export default function EventList({ eventList, onClick }) {
+export default function EventList({ eventList, onClick, disabled = false }) {
   return (
     <div className="w-full flex flex-col py-10 xl:py-20 gap-y-3 xl:gap-y-8">
       <h2 className="text-center text-[20px] md:text-[26px] uppercase mb-0 font-bold">
@@ -16,7 +16,7 @@ export default function EventList({ eventList, onClick }) {
         <Button
           className="max-w-40"
           onClick={onClick}
-          disabled={eventList?.length <= 20}>
+          disabled={disabled || eventList?.length >= 20}>
           Xem Thêm
         </Button>
       </div>

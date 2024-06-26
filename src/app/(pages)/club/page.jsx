@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ClubList from "./_components/ClubList";
 import PopularCLub from "./_components/PopularCLub";
 import Autoplay from "embla-carousel-autoplay";
@@ -20,16 +20,21 @@ export default function Club() {
   const recruitmentClubList = useSelector(
     (state) => state.club.recruitmentClubList
   );
+  const [disabled, setDisabled] = useState(false);
+
   const startIndex = useSelector((state) => state.club.startIndex);
   useEffect(() => {
     getAllClubPublic();
   }, [startIndex]);
 
   const getAllClubPublic = async () => {
+    setDisabled(true);
+
     const res = await getAllClubPublicAPI(startIndex);
     if (res?.status == 200) {
       dispatch(setClubPublicList(res?.data));
     }
+    setDisabled(false);
   };
   // const getClubsByEventType = async () => {
   //   const res = await getClubsByEventTypeAPI(startIndex);
@@ -43,7 +48,11 @@ export default function Club() {
   return (
     <div className="container flex flex-col min-h-screen">
       <PopularCLub plugin={plugin} clubList={recruitmentClubList} />
-      <ClubList clubList={clubPublicList} onClick={onClick} />
+      <ClubList
+        clubList={clubPublicList}
+        onClick={onClick}
+        disabled={disabled}
+      />
     </div>
   );
 }

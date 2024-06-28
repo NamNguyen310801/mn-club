@@ -5,58 +5,99 @@ import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 import moment from "moment";
 
 export default function EventTable({ eventList, onDelete }) {
-  const getRole = (role) => {
-    if (role === 1) return "admin";
-    else if (role == 2) return "manage";
-    else if (role == 3) return "basic";
-    else return "guest";
+  const getApprove = (approve) => {
+    if (approve === "pending") return "Chờ duyệt";
+    else if (approve === "approved") return "Đã duyệt";
+    else if (approve === "reject") return "Từ chối";
   };
   const columns = [
     {
       name: "eventID",
       label: "NO",
+      options: {
+        filter: false,
+      },
     },
 
     {
       name: "name",
       label: "Tên Sự Kiện",
+      options: {
+        filter: false,
+      },
     },
     {
       name: "approveStatus",
       label: "Trạng Thái Duyệt",
+      options: {
+        customBodyRender: (value) => (
+          <div className="text-wrap max-w-20 capitalize">
+            {getApprove(value?.toLowerCase())}
+          </div>
+        ),
+        // filter: true,
+        // filterType: "dropdown",
+        // filterOptions: {
+        //   names: ["Chờ duyệt", "Đã duyệt", "Từ chối"],
+        //   logic: (enable, filterVal) => {
+        //     if (filterVal.length > 0) {
+        //       return (filterVal.includes("pending") && enable) ||
+        //         (filterVal.includes("approved") && !enable) ||
+        //         filterVal.includes("reject")
+        //         ? false
+        //         : true;
+        //     }
+        //     return false;
+        //   },
+        // },
+        // customFilterListOptions: {
+        //   render: (value) => {
+        //     if (value === "Chờ duyệt") return "Chờ duyệt";
+        //     if (value === "Đã duyệt") return "Đã duyệt";
+        //     if (value === "Từ chối") return "Từ chối";
+        //     return value;
+        //   },
+        // },
+      },
     },
+
     {
       name: "startDate",
-      label: "Thời Gian Bắt Đầu",
+      label: "Bắt Đầu",
       options: {
         customBodyRender: (value) => (
           <div className="text-wrap max-w-20">
-            {moment(value).format("DD/MMM/yyy")}
+            {moment(value).format("DD/MM/yyy")}
           </div>
         ),
+        filter: false,
       },
     },
     {
       name: "endDate",
-      label: "Thời Gian Kết Thúc",
+      label: "Kết Thúc",
       options: {
         customBodyRender: (value) => (
           <div className="text-wrap max-w-20">
-            {moment(value).format("DD/MMM/yyy")}
+            {moment(value).format("DD/MM/yyy")}
           </div>
         ),
+        filter: false,
       },
     },
     {
       name: "location",
       label: "Địa Điểm",
+      options: {
+        filter: false,
+      },
     },
     {
       name: "clubName",
       label: "Đơn Vị Tổ Chức",
     },
     {
-      name: "eventTypeId",
+      name: "setting",
       label: "Loại Sự Kiện",
     },
     {
@@ -132,7 +173,7 @@ export default function EventTable({ eventList, onDelete }) {
               backgroundColor: "#A9A9A9",
             },
             toolButton: {
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: 600,
             },
           },
@@ -146,12 +187,52 @@ export default function EventTable({ eventList, onDelete }) {
         },
       },
     });
+  const data = [
+    {
+      eventID: 1,
+      clubId: 4,
+      club: null,
+      banner:
+        "https://res.cloudinary.com/dgwtfzr13/image/upload/v1718898937/cld-sample-5.jpg",
+      userId: "e4f125a1-1020-4931-bcbc-fc262b2e8abb",
+      user: null,
+      name: "Talkshow of english",
+      description: "A talkshow",
+      startDate: "2024-05-13T00:00:00",
+      endDate: "2024-05-15T00:00:00",
+      approveStatus: "Pending",
+      status: "Not Yet",
+      location: "Hội Trường",
+      eventTypeId: 2,
+      setting: null,
+      registrations: null,
+    },
+    {
+      eventID: 2,
+      clubId: 8,
+      club: null,
+      banner:
+        "https://res.cloudinary.com/dgwtfzr13/image/upload/v1719151396/TRANH-CD-HTAP-BAC-HO-2015-250_szl5h4.jpg",
+      userId: "e4f125a1-1020-4931-bcbc-fc262b2e8abb",
+      user: null,
+      name: "Mock up",
+      description: "Mock Up",
+      startDate: "2024-06-23T00:00:00",
+      endDate: "2024-06-25T00:00:00",
+      approveStatus: "Approved",
+      status: "Not Yet",
+      location: "Sân Trường ",
+      eventTypeId: 2,
+      setting: null,
+      registrations: null,
+    },
+  ];
   return (
     <div className="w-full">
       <ThemeProvider theme={getMuiTheme()}>
         <MUIDataTable
           title={""}
-          data={eventList || []}
+          data={eventList || data}
           columns={columns}
           options={options}
         />

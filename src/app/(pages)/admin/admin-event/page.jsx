@@ -12,18 +12,26 @@ import {
   getAllEventAPI,
 } from "@/app/_utils/services/event.api";
 import { useEffect } from "react";
+import { getEventTypeAPI } from "@/app/_utils/services/setting.api";
+import { setEventTypeList } from "@/app/_utils/store/setting.slice";
 
 export default function AdminEvent() {
   const user = useSelector((state) => state.auth.userAuth);
   const eventList = useSelector((state) => state.admin.eventList);
   const isGetEventList = useSelector((state) => state.admin.isGetEventList);
+  const eventTypeList = useSelector((state) => state.setting.eventTypeList);
+
   useEffect(() => {
     getAllEvent();
   }, [isGetEventList]);
-
+  useEffect(() => {
+    if (!eventTypeList) {
+      getEventTypeList();
+    }
+  }, [eventTypeList]);
   const getAllEvent = async () => {
     const res = await getAllEventAPI();
-    if (res?.status) {
+    if (res?.status == 200) {
       dispatch(setEventList(res));
     }
   };
@@ -34,6 +42,12 @@ export default function AdminEvent() {
       toast("Xóa thành công!");
     } else {
       toast("Xóa không thành công!");
+    }
+  };
+  const getEventTypeList = async () => {
+    const res = await getEventTypeAPI();
+    if (res?.status == 200) {
+      dispatch(setEventTypeList(res?.data));
     }
   };
   return (

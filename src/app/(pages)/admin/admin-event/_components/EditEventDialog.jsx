@@ -1,32 +1,47 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ButtonEdit, FormItem } from "@/components/_personal";
-import { useState } from "react";
+import { ButtonEdit, FormItem, DatePicker } from "@/components/_personal";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { updateEventAPI } from "@/app/_utils/services/event.api";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsGetEventList } from "@/app/_utils/store/admin.slice";
-export default function EditEventDialog() {
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+
+export default function EditEventDialog({ dataRow }) {
   const dispatch = useDispatch();
   const isGetEventList = useSelector((state) => state.admin.isGetEventList);
+  const eventTypeList = useSelector((state) => state.setting.eventTypeList);
   const defaultData = {
-    user_id: "",
-    username: "",
+    eventID: "",
+    name: "",
     email: "",
-    role_id: 1,
-    first_name: "",
-    last_name: "",
+    approveStatus: 1,
+    startDate: "",
+    endDate: "",
     address: "",
-    phone_number: "",
-    avatar: "",
-    student_code: "",
-    description: "",
-    enable: true,
-    password: "",
-    verify: "",
+    location: "",
+    clubName: "",
+    setting: "",
+    status: true,
   };
+
   const [data, setData] = useState(defaultData);
+  useEffect(() => {
+    setData(dataRow);
+  }, [dataRow]);
+
   const onSubmit = () => {
     console.log(data);
     toast("submit");
@@ -51,7 +66,121 @@ export default function EditEventDialog() {
         <h2 className="text-center font-bold text-xl capitalize">
           Cập Nhật Sự Kiện
         </h2>
-        <form className="flex flex-col gap-y-2 mt-2 text-sm"></form>
+        <form className="grid grid-cols-2 gap-3 mt-2 text-sm">
+          {/* Name */}
+          <FormItem
+            name="Tên Sự Kiện:"
+            id="name"
+            value={data?.name}
+            placeHolder="Tên Sự Kiện"
+            type="text"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, name: e.target.value }))
+            }
+          />
+          <FormItem
+            name="Đơn vị Tổ Chức:"
+            id="clubName"
+            value={data?.clubName}
+            placeHolder="Đơn vị Tổ Chức"
+            type="text"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, clubName: e.target.value }))
+            }
+          />
+          <div className="flex flex-col gap-y-3 relative">
+            <Label htmlFor="user_startDate" className="font-semibold">
+              Ngày Bắt Đầu
+            </Label>
+            <DatePicker
+              disabled={false}
+              title={"Ngày Bắt Đầu"}
+              date={data?.startDate}
+              setDate={(value) =>
+                setData((pre) => ({ ...pre, startDate: value }))
+              }
+            />
+          </div>
+          <div className="flex flex-col gap-y-3 relative">
+            <Label htmlFor="user_endDate" className="font-semibold">
+              Ngày Kết Thúc
+            </Label>
+            <DatePicker
+              disabled={false}
+              title={"Ngày Kết Thúc"}
+              date={data?.endDate}
+              setDate={(value) =>
+                setData((pre) => ({ ...pre, endDate: value }))
+              }
+            />
+          </div>
+          <FormItem
+            name="Địa Điểm:"
+            id="location"
+            value={data?.location}
+            placeHolder="Địa Điểm"
+            type="text"
+            onChange={(e) =>
+              setData((pre) => ({ ...pre, location: e.target.value }))
+            }
+          />
+
+          <div className="flex flex-col items-start gap-y-3">
+            <Label htmlFor="clubCategoryId" className="">
+              Loại Sự Kiện:
+            </Label>
+            <Select
+              className="border-b"
+              onValueChange={(value) =>
+                setData((pre) => ({
+                  ...pre,
+                  setting: value?.name,
+                  eventTypeId: value?.settingId,
+                }))
+              }>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Chọn Loại Sự Kiện" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Loại Sự Kiện</SelectLabel>
+                  {eventTypeList?.map((item, index) => (
+                    <SelectItem value={item} key={index}>
+                      {item?.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex flex-col items-start gap-y-3 col-span-2">
+            <Label htmlFor="role" className="">
+              Trạng Thái:
+            </Label>
+            <RadioGroup
+              defaultValue="Not Yet"
+              className="flex justify-between items-center w-full px-4"
+              onValueChange={(value) =>
+                setData((pre) => ({
+                  ...pre,
+                  status: value,
+                }))
+              }>
+              <div className="flex items-center gap-x-3">
+                <RadioGroupItem value="Not Yet" id="status_1" />
+                <Label htmlFor="status_1">Chưa diễn ra</Label>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <RadioGroupItem value="Happening" id="status_2" />
+                <Label htmlFor="status_2">Đang diễn ra</Label>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <RadioGroupItem value="Ended" id="status_2" />
+                <Label htmlFor="status_2">Đã kết thúc</Label>
+              </div>
+            </RadioGroup>
+          </div>
+        </form>
         <div
           className="w-full flex items-center justify-center mt-auto"
           onClick={onSubmit}>

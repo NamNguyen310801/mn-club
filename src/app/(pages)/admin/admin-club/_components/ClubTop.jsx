@@ -124,8 +124,8 @@ export default function ClubTop() {
                 <SelectGroup>
                   <SelectLabel>Loại Câu Lạc Bộ</SelectLabel>
                   {clubTypeList?.map((item, index) => (
-                    <SelectItem value={item?.value} key={index}>
-                      {item?.value}
+                    <SelectItem value={item?.name} key={index}>
+                      {item?.name}
                     </SelectItem>
                   ))}
                 </SelectGroup>

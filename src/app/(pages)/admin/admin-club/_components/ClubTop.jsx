@@ -1,7 +1,7 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ButtonAdd, DatePicker, FormItem } from "@/components/_personal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -22,30 +22,35 @@ import { setIsGetClubList } from "@/app/_utils/store/admin.slice";
 export default function ClubTop() {
   const dispatch = useDispatch();
   const isGetClubList = useSelector((state) => state.admin.isGetClubList);
+  const clubTypeList = useSelector((state) => state.setting.clubTypeList);
+  const toDay = new Date();
 
   const defaultData = {
-    manager_id: "",
-    name: "",
     code: "",
-    founding_date: "",
-    club_category_id: 1,
-    status: "",
-    member_count: 0,
-    avatar: "",
-    website: "",
-    description: "",
-    fund_amount: "",
+    name: "",
     email: "",
+    avatar: "",
+    setting: "",
+    description: "",
+    foundingDate: toDay,
+    memberCount: 0,
+    fundAmount: 0,
+    website: "",
+    clubCategoryId: 1,
+    status: "Active",
+    manager: {
+      managerId: "",
+      fullName: "",
+    },
   };
+
   const [data, setData] = useState(defaultData);
+
   const handleUploadImage = async (e) => {
     const image = await getBase64(e.target.files[0]);
     setData((prev) => ({ ...prev, avatar: image }));
   };
-  const onSubmit = () => {
-    console.log(data);
-    toast("submit");
-  };
+
   const createClub = async () => {
     const res = await createClubAPI(data);
     if (res?.status == 200) {
@@ -55,6 +60,7 @@ export default function ClubTop() {
       toast("Thêm mới câu lạc bộ thất bại");
     }
   };
+
   return (
     <Dialog className="bg-black/20">
       <div className="w-full flex p-4 items-center justify-between">
@@ -92,24 +98,24 @@ export default function ClubTop() {
           {/* Manager */}
           <FormItem
             name="Chủ nhiệm:"
-            id="manager_id"
-            value={data?.manager_id}
+            id="manager"
+            value={data?.manager?.fullName}
             placeHolder="Chủ nhiệm"
             type="text"
             className="w-1/2"
             onChange={(e) =>
-              setData((pre) => ({ ...pre, manager_id: e.target.value }))
+              setData((pre) => ({ ...pre, manager: e.target.value }))
             }
           />
           {/* ClubCate */}
           <div className="flex flex-col items-start gap-y-3">
-            <Label htmlFor="club_category_id" className="">
+            <Label htmlFor="clubCategoryId" className="">
               Loại Câu Lạc Bộ:
             </Label>
             <Select
               className="border-b"
               onValueChange={(value) =>
-                setData((pre) => ({ ...pre, club_category_id: Number(value) }))
+                setData((pre) => ({ ...pre, setting: value }))
               }>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Chọn Loại Câu Lạc Bộ" />
@@ -117,10 +123,11 @@ export default function ClubTop() {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Loại Câu Lạc Bộ</SelectLabel>
-                  <SelectItem value={"1"}>Admin</SelectItem>
-                  <SelectItem value={"2"}>Manage</SelectItem>
-                  <SelectItem value={"3"}>Basic</SelectItem>
-                  <SelectItem value={"4"}>Guest</SelectItem>
+                  {clubTypeList?.map((item, index) => (
+                    <SelectItem value={item?.value} key={index}>
+                      {item?.value}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -133,55 +140,55 @@ export default function ClubTop() {
             <DatePicker
               disabled={false}
               title={"Ngày thành Lập"}
-              date={data?.founding_date}
+              date={data?.foundingDate}
               setDate={(value) =>
-                setData((pre) => ({ ...pre, founding_date: value }))
+                setData((pre) => ({ ...pre, foundingDate: value }))
               }
             />
           </div>
           {/* member count */}
           <FormItem
             name="Số Lượng Thành Viên:"
-            id="member_count"
-            value={data?.member_count}
+            id="memberCount"
+            value={data?.memberCount}
             placeHolder="Số Lượng Thành Viên"
             type="number"
             onChange={(e) =>
-              setData((pre) => ({ ...pre, member_count: e.target.value }))
+              setData((pre) => ({ ...pre, memberCount: e.target.value }))
             }
-          />{" "}
-          {/* member count */}
+          />
+          {/* Quy
           <FormItem
             name="Quỹ:"
-            id="fund_amount"
-            value={data?.fund_amount}
+            id="fundAmount"
+            value={data?.fundAmount}
             placeHolder="Quỹ"
             type="number"
             onChange={(e) =>
-              setData((pre) => ({ ...pre, fund_amount: e.target.value }))
+              setData((pre) => ({ ...pre, fundAmount: e.target.value }))
             }
-          />
+          /> */}
           {/* status */}
           <div className="flex flex-col items-start gap-y-3">
             <Label htmlFor="role" className="">
               Trạng Thái:
             </Label>
             <RadioGroup
-              defaultValue="true"
+              defaultValue="Active"
               className="flex justify-between items-center w-full px-4"
               onValueChange={(value) =>
                 setData((pre) => ({
                   ...pre,
-                  status: value === "true" ? true : false,
+                  status: value,
                 }))
               }>
               <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="true" id="status_1" />
+                <RadioGroupItem value="Active" id="status_1" />
                 <Label htmlFor="status_1">Đang hoạt động</Label>
               </div>
               <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="false" id="status_2" />
-                <Label htmlFor="status_2">Không hoạt động</Label>
+                <RadioGroupItem value="Inactive" id="status_2" />
+                <Label htmlFor="status_2">Ngừng hoạt động</Label>
               </div>
             </RadioGroup>
           </div>
@@ -205,7 +212,7 @@ export default function ClubTop() {
               setData((pre) => ({ ...pre, website: e.target.value }))
             }
           />
-          <FormItem
+          {/* <FormItem
             name="Mô tả:"
             id="code"
             value={data?.description}
@@ -214,7 +221,7 @@ export default function ClubTop() {
             onChange={(e) =>
               setData((pre) => ({ ...pre, description: e.target.value }))
             }
-          />
+          /> */}
           <FormItem
             name="Avatar:"
             id="avatar"
@@ -226,7 +233,7 @@ export default function ClubTop() {
         </form>
         <div
           className="w-full flex items-center justify-center mt-auto"
-          onClick={onSubmit}>
+          onClick={createClub}>
           <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">Thêm</Button>
         </div>
       </DialogContent>

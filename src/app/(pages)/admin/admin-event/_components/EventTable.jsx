@@ -2,6 +2,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import EditEventDialog from "./EditEventDialog";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
+import moment from "moment";
 
 export default function EventTable({ eventList, onDelete }) {
   const getRole = (role) => {

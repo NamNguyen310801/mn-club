@@ -18,14 +18,13 @@ export default function PopularEvent({ plugin, eventList }) {
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}>
         <CarouselContent className="w-full gap-x-4 lg:gap-x-6 -ml-0">
-          {eventList ||
-            Array.from({ length: 6 }).map((item, index) => (
-              <CarouselItem
-                key={index}
-                className="pl-0 md:basis-1/2 max-w-full md:max-w-[calc(50%-8px)] lg:basis-1/3 lg:max-w-[calc(100%/3-16px)]">
-                <EventItem hidden item={item} />
-              </CarouselItem>
-            ))}
+          {eventList?.map((item, index) => (
+            <CarouselItem
+              key={index}
+              className="pl-0 md:basis-1/2 max-w-full md:max-w-[calc(50%-8px)] lg:basis-1/3 lg:max-w-[calc(100%/3-16px)]">
+              <EventItem hidden item={item} />
+            </CarouselItem>
+          ))}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />

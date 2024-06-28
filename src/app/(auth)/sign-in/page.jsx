@@ -45,22 +45,22 @@ export default function SignIn() {
     setLoader(true);
     const res = await signInAPI(dt);
     if (res?.status == 200) {
-      if (res?.access_token && res?.refresh_token) {
-        const decoded = jwtDecode(res.access_token);
+      if (res?.data?.accessToken && res?.data?.refreshToken) {
+        const decoded = jwtDecode(res?.data?.accessToken);
         if (decoded?.id) {
           handleGetDetailsUser(
             decoded?.id,
-            res?.access_token,
-            res?.refresh_token
+            res?.data?.accessToken,
+            res?.data?.refreshToken
           );
         }
         sessionStorage.setItem(
-          "access_token",
-          JSON.stringify(res?.access_token)
+          "accessToken",
+          JSON.stringify(res?.data?.accessToken)
         );
         sessionStorage.setItem(
-          "refresh_token",
-          JSON.stringify(res?.refresh_token)
+          "refreshToken",
+          JSON.stringify(res?.data?.refreshToken)
         );
         toast("Đăng nhập thành công");
         setLoader(false);
@@ -81,8 +81,8 @@ export default function SignIn() {
     dispatch(setUserAuth(res?.data));
     dispatch(
       setJwtAuth({
-        access_token: accessToken,
-        refresh_token: refreshToken,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       })
     );
   };

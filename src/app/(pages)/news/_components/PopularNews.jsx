@@ -5,7 +5,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import NewsItem from "./NewsItem";
+import { NewsItem } from "@/components/_personal";
+
 export default function PopularNews({ plugin, newsList }) {
   return (
     <div className="w-full flex flex-col pt-10 xl:pt-20 gap-y-3 xl:gap-y-8">

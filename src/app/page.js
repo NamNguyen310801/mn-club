@@ -1,20 +1,17 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
-import { Event, Footer, Header, Hero, Testimonials } from "./_components";
+import { Event, Footer, Header, Hero, News, Club } from "./_components";
 import { handleDecoded } from "./_utils/functions/functions";
 import { setJwtAuth, setUserAuth } from "./_utils/store/auth.slice";
 import * as UserService from "./_utils/services/user.api";
 import { useEffect } from "react";
-import { getAllClubPublicAPI } from "./_utils/services/club.api";
-import { setClubPublicList } from "./_utils/store/club.slice";
-import { setEventPublicList } from "./_utils/store/event.slice";
-import { getAllEventPublicAPI } from "./_utils/services/event.api";
+import { setPopularEventList } from "./_utils/store/event.slice";
+import { getAllPopularEventAPI } from "./_utils/services/event.api";
 
 export default function Home() {
   const dispatch = useDispatch();
   const userAuth = useSelector((state) => state.auth.userAuth);
-  const eventPublicList = useSelector((state) => state.event.eventPublicList);
-
+  const popularEventList = useSelector((state) => state.event.popularEventList);
   useEffect(() => {
     const { decoded, accessToken, refreshToken } = handleDecoded();
     if (decoded?.id && !userAuth?.email) {
@@ -23,7 +20,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    getAllEventPublic();
+    getAllPopularEvent();
   }, []);
 
   const handleGetDetailsUser = async (id, accessToken, refreshToken) => {
@@ -37,16 +34,24 @@ export default function Home() {
     );
   };
 
-  const getAllClubPublic = async () => {
-    const res = await getAllClubPublicAPI();
+  // Không dùng
+
+  // const getAllClubPublic = async () => {
+  //   const res = await getAllClubPublicAPI();
+  //   if (res?.status == 200) {
+  //     dispatch(setClubPublicList(res?.data));
+  //   }
+  // };
+  // const getAllEventPublic = async () => {
+  //   const res = await getAllEventPublicAPI();
+  //   if (res?.status == 200) {
+  //     dispatch(setEventPublicList(res?.data));
+  //   }
+  // };
+  const getAllPopularEvent = async () => {
+    const res = await getAllPopularEventAPI(6);
     if (res?.status == 200) {
-      dispatch(setClubPublicList(res?.data));
-    }
-  };
-  const getAllEventPublic = async () => {
-    const res = await getAllEventPublicAPI();
-    if (res?.status == 200) {
-      dispatch(setEventPublicList(res?.data));
+      dispatch(setPopularEventList(res?.data));
     }
   };
 
@@ -55,8 +60,9 @@ export default function Home() {
       <Header />
       <div className="container flex flex-col">
         <Hero />
-        <Event eventList={eventPublicList} />
-        <Testimonials />
+        <News newsList={popularEventList} />
+        <Event eventList={popularEventList} />
+        <Club />
       </div>
       <Footer />
     </>

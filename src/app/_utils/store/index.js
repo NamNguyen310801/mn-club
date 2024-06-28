@@ -6,6 +6,7 @@ import eventSlice from "./event.slice";
 import newsSlice from "./news.slice";
 import achievementSlice from "./achievement.slice";
 import managerSlice from "./manager.slice";
+import settingSlice from "./setting.slice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     event: eventSlice,
     news: newsSlice,
     achievement: achievementSlice,
+    setting: settingSlice,
   },
 });

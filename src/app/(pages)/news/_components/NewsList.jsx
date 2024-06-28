@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import NewsItem from "./NewsItem";
+import { NewsItem } from "@/components/_personal";
 
 export default function NewsList({ newsList, onClick }) {
   return (

@@ -44,7 +44,9 @@ const ROUTER_API = {
 
   // Student
   getAllStudentURL: "",
-
+  // Setting
+  getClubTypeURL: "/api/Setting/GetClubType",
+  getEventTypeURL: "/api/Setting/GetEventType",
   // Department
   getAllDepartmentURL: "",
   createDepartmentURL: "",

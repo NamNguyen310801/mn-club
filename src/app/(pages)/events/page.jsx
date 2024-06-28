@@ -20,27 +20,41 @@ export default function Event() {
   const popularEventList = useSelector((state) => state.event.popularEventList);
   const startIndex = useSelector((state) => state.event.startIndex);
   const [disabled, setDisabled] = useState(false);
+  const [length, setLength] = useState(0);
+
   useEffect(() => {
     getAllEventPublic();
   }, [startIndex]);
 
+  useEffect(() => {
+    if (!popularEventList) {
+      getAllPopularEvent();
+    }
+  }, [popularEventList]);
+
+  //
   const getAllEventPublic = async () => {
     setDisabled(true);
-    const res = await getAllEventPublicAPI(startIndex);
+    const res = await getAllEventPublicAPI({ startIndex });
     if (res?.status == 200) {
-      dispatch(setEventPublicList(res?.data));
+      dispatch(setEventPublicList(res?.data?.data));
+      setLength(res?.data?.length);
     }
     setDisabled(false);
   };
+
+  //
   const getAllPopularEvent = async () => {
-    const res = await getAllPopularEventAPI(startIndex);
+    const res = await getAllPopularEventAPI();
     if (res?.status == 200) {
-      dispatch(setPopularEventList(res?.data)); //
+      dispatch(setPopularEventList(res?.data));
     }
   };
+
   const onClick = () => {
     dispatch(setStartIndex(startIndex + 8));
   };
+
   return (
     <div className="container flex flex-col min-h-screen">
       <PopularEvent plugin={plugin} eventList={popularEventList} />
@@ -48,6 +62,7 @@ export default function Event() {
         eventList={eventPublicList}
         onClick={onClick}
         disabled={disabled}
+        length={length}
       />
     </div>
   );

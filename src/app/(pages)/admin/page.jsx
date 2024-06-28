@@ -25,8 +25,8 @@ export default function Admin() {
 
   const getAllUser = async () => {
     const res = await getAllUserAPI();
-    if (res) {
-      dispatch(setUserList(res));
+    if (res?.status == 200) {
+      dispatch(setUserList(res?.data));
     }
   };
   return (

@@ -11,6 +11,7 @@ import {
   deleteEventAPI,
   getAllEventAPI,
 } from "@/app/_utils/services/event.api";
+import { useEffect } from "react";
 
 export default function AdminEvent() {
   const user = useSelector((state) => state.auth.userAuth);
@@ -18,7 +19,7 @@ export default function AdminEvent() {
   const isGetEventList = useSelector((state) => state.admin.isGetEventList);
   useEffect(() => {
     getAllEvent();
-  }, [isGetClubList]);
+  }, [isGetEventList]);
 
   const getAllEvent = async () => {
     const res = await getAllEventAPI();

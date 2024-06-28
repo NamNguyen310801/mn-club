@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsGetClubList } from "@/app/_utils/store/admin.slice";
 export default function EditClubDialog({ dataRow }) {
   const dispatch = useDispatch();
+  const clubTypeList = useSelector((state) => state.setting.clubTypeList);
   const isGetClubList = useSelector((state) => state.admin.isGetClubList);
   const [data, setData] = useState();
   useEffect(() => {
@@ -29,10 +30,6 @@ export default function EditClubDialog({ dataRow }) {
   const handleUploadImage = async (e) => {
     const image = await getBase64(e.target.files[0]);
     setData((prev) => ({ ...prev, avatar: image }));
-  };
-  const onSubmit = () => {
-    console.log(data);
-    toast("submit");
   };
   const updateClub = async () => {
     const res = await updateClubAPI(data);
@@ -43,6 +40,7 @@ export default function EditClubDialog({ dataRow }) {
       toast("Cập nhật thất bại!");
     }
   };
+
   return (
     <Dialog className="bg-black/20">
       <div className="w-full flex p-4 items-center justify-between">
@@ -80,24 +78,29 @@ export default function EditClubDialog({ dataRow }) {
           {/* Manager */}
           <FormItem
             name="Chủ nhiệm:"
-            id="manager_id"
-            value={data?.manager_id}
+            id="manager"
+            value={data?.manager?.fullName}
             placeHolder="Chủ nhiệm"
             type="text"
             className="w-1/2"
             onChange={(e) =>
-              setData((pre) => ({ ...pre, manager_id: e.target.value }))
+              setData((pre) => ({
+                ...pre,
+                manager: {
+                  fullName: e.target.value,
+                },
+              }))
             }
           />
           {/* ClubCate */}
           <div className="flex flex-col items-start gap-y-3">
-            <Label htmlFor="club_category_id" className="">
+            <Label htmlFor="clubCategory" className="">
               Loại Câu Lạc Bộ:
             </Label>
             <Select
               className="border-b"
               onValueChange={(value) =>
-                setData((pre) => ({ ...pre, club_category_id: Number(value) }))
+                setData((pre) => ({ ...pre, setting: value }))
               }>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Chọn Loại Câu Lạc Bộ" />
@@ -105,10 +108,11 @@ export default function EditClubDialog({ dataRow }) {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Loại Câu Lạc Bộ</SelectLabel>
-                  <SelectItem value={"1"}>Admin</SelectItem>
-                  <SelectItem value={"2"}>Manage</SelectItem>
-                  <SelectItem value={"3"}>Basic</SelectItem>
-                  <SelectItem value={"4"}>Guest</SelectItem>
+                  {clubTypeList?.map((item, index) => (
+                    <SelectItem value={item?.value} key={index}>
+                      {item?.value}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -121,25 +125,25 @@ export default function EditClubDialog({ dataRow }) {
             <DatePicker
               disabled={false}
               title={"Ngày thành Lập"}
-              date={data?.founding_date}
+              date={data?.foundingDate}
               setDate={(value) =>
-                setData((pre) => ({ ...pre, founding_date: value }))
+                setData((pre) => ({ ...pre, foundingDate: value }))
               }
             />
           </div>
           {/* member count */}
           <FormItem
             name="Số Lượng Thành Viên:"
-            id="member_count"
-            value={data?.member_count}
+            id="memberCount"
+            value={data?.memberCount}
             placeHolder="Số Lượng Thành Viên"
             type="number"
             onChange={(e) =>
-              setData((pre) => ({ ...pre, member_count: e.target.value }))
+              setData((pre) => ({ ...pre, memberCount: e.target.value }))
             }
           />{" "}
-          {/* member count */}
-          <FormItem
+          {/* fund */}
+          {/* <FormItem
             name="Quỹ:"
             id="fund_amount"
             value={data?.fund_amount}
@@ -148,7 +152,7 @@ export default function EditClubDialog({ dataRow }) {
             onChange={(e) =>
               setData((pre) => ({ ...pre, fund_amount: e.target.value }))
             }
-          />
+          /> */}
           {/* status */}
           <div className="flex flex-col items-start gap-y-3">
             <Label htmlFor="role" className="">
@@ -193,7 +197,7 @@ export default function EditClubDialog({ dataRow }) {
               setData((pre) => ({ ...pre, website: e.target.value }))
             }
           />
-          <FormItem
+          {/* <FormItem
             name="Mô tả:"
             id="code"
             value={data?.description}
@@ -202,7 +206,7 @@ export default function EditClubDialog({ dataRow }) {
             onChange={(e) =>
               setData((pre) => ({ ...pre, description: e.target.value }))
             }
-          />
+          /> */}
           <FormItem
             name="Avatar:"
             id="avatar"
@@ -214,7 +218,7 @@ export default function EditClubDialog({ dataRow }) {
         </form>
         <div
           className="w-full flex items-center justify-center mt-auto"
-          onClick={onSubmit}>
+          onClick={updateClub}>
           <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">Thêm</Button>
         </div>
       </DialogContent>

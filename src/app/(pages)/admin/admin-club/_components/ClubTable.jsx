@@ -3,19 +3,22 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 import EditClubDialog from "./EditClubDialog";
 import moment from "moment";
-export default function ClubTable({ clubList, onDelete }) {
+export default function ClubTable(props) {
+  const { clubList, onDelete } = props;
   const columns = [
-    {
-      name: "id",
-      label: "NO",
-    },
     {
       name: "code",
       label: "Tên Viết Tắt",
+      options: {
+        filter: false,
+      },
     },
     {
       name: "name",
       label: "Tên CLB",
+      options: {
+        filter: false,
+      },
     },
     {
       name: "manager",
@@ -24,14 +27,14 @@ export default function ClubTable({ clubList, onDelete }) {
         customBodyRender: (value) => (
           <div className="text-wrap max-w-20">{value?.fullName}</div>
         ),
+        filter: false,
       },
     },
-
     {
       name: "setting",
       label: "Loại CLB",
       options: {
-        customBodyRender: (value) => <div className="">{value?.value}</div>,
+        customBodyRender: (value) => <div className="">{value}</div>,
       },
     },
     {
@@ -40,41 +43,46 @@ export default function ClubTable({ clubList, onDelete }) {
       options: {
         customBodyRender: (value) => (
           <div className="text-wrap max-w-20">
-            {moment(value).format("DD/MMM/yyy")}
+            {moment(value).format("DD/MM/yyy")}
           </div>
         ),
+        filter: false,
       },
     },
     {
       name: "memberCount",
       label: "SL Thành Viên",
+      options: {
+        filter: false,
+      },
     },
     {
       name: "status",
       label: "Trạng thái",
       options: {
-        customBodyRender: (value) => <div>{value ? "Active" : "Inactive"}</div>,
-        filter: true,
-        filterType: "dropdown",
-        filterOptions: {
-          names: ["Active", "Inactive"],
-          logic: (enable, filterVal) => {
-            if (filterVal.length > 0) {
-              return (filterVal.includes("Active") && enable) ||
-                (filterVal.includes("Inactive") && !enable)
-                ? false
-                : true;
-            }
-            return false;
-          },
-        },
-        customFilterListOptions: {
-          render: (value) => {
-            if (value === true) return "Active";
-            if (value === false) return "Inactive";
-            return value;
-          },
-        },
+        customBodyRender: (value) => <div>{value}</div>,
+        // customBodyRender: (value) => <div>{value ? "Active" : "Inactive"}</div>,
+        // filter: true,
+        // filterType: "dropdown",
+        // filterOptions: {
+        //   names: ["Active", "Inactive"],
+        //   logic: (enable, filterVal) => {
+        //     if (filterVal.length > 0) {
+        //       return (filterVal.includes("Active") && enable) ||
+        //         (filterVal.includes("Inactive") && !enable)
+        //         ? false
+        //         : true;
+        //     }
+        //     return false;
+        //   },
+        // },
+        // customFilterListOptions: {
+        //   render: (value) => {
+        //     if (value === true) return "Active";
+        //     if (value === false) return "Inactive";
+        //     return value;
+        //   },
+        // },
       },
     },
     {
@@ -90,43 +98,6 @@ export default function ClubTable({ clubList, onDelete }) {
         ),
         filter: false,
       },
-    },
-    {
-      name: "email",
-      label: "Email",
-      options: {
-        customBodyRender: (value) => (
-          <div className="text-wrap max-w-20 text-ellipsis overflow-hidden">
-            {value}
-          </div>
-        ),
-      },
-    },
-    {
-      name: "website",
-      label: "Website",
-      options: {
-        customBodyRender: (value) => (
-          <div className="text-wrap max-w-20 text-ellipsis overflow-hidden">
-            {value}
-          </div>
-        ),
-      },
-    },
-    {
-      name: "description",
-      label: "Mô tả",
-      options: {
-        customBodyRender: (value) => (
-          <div className="text-wrap max-w-20 text-ellipsis line-clamp-2">
-            {value}
-          </div>
-        ),
-      },
-    },
-    {
-      name: "fundAmount",
-      label: "Quỹ",
     },
     {
       name: "",
@@ -208,40 +179,61 @@ export default function ClubTable({ clubList, onDelete }) {
         },
       },
     });
-  const data = [
-    {
-      id: 1,
-      username: "Emily",
-      lastName: "Johnson",
-      student_code: "aaas",
-      email: "asdas.johnson@x.dummyjson.com",
-      phone_number: "0333460843",
-      enable: false,
-      password: "aaasdasd",
-    },
-    {
-      id: 2,
-      username: "Emlily",
-      lastName: "Johnson",
-      student_code: "asd",
-      email: "emily.johnson@x.dummyjson.com",
-      phone_number: "0235460844",
-      enable: true,
-      password: "aaasdasd",
-      avatar:
-        "https://images.unsplash.com/photo-1712847333437-f9386beb83e4?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
+
   const handleDelete = async (rowIndex) => {
     const rowData = data[rowIndex];
     await onDelete(rowData);
   };
+  const data = [
+    {
+      clubId: 4,
+      code: "FEC",
+      name: "FPT English Club",
+      email: "FEC@gmail.com",
+      avatar:
+        "https://res.cloudinary.com/dgwtfzr13/image/upload/v1718898937/cld-sample-5.jpg",
+      description: "Club English",
+      foundingDate: "2020-06-13T00:00:00",
+      memberCount: 100,
+      fundAmount: 100000,
+      website: "www.fec.com",
+      status: "Active",
+      setting: "Học thuật",
+      manager: {
+        managerId: "1",
+        fullName: "Nguy",
+      },
+      clubTeams: [],
+      clubMembers: [],
+    },
+    {
+      clubId: 4,
+      code: "MNM",
+      name: "KMK English Club",
+      email: "KJH@gmail.com",
+      avatar:
+        "https://res.cloudinary.com/dgwtfzr13/image/upload/v1718898937/cld-sample-5.jpg",
+      description: "Club English",
+      foundingDate: "2020-06-18T00:00:00",
+      memberCount: 100,
+      fundAmount: 100000,
+      website: "www.fec.com",
+      status: "Active",
+      setting: "Học thuật",
+      manager: {
+        managerId: "1",
+        fullName: "Nguy",
+      },
+      clubTeams: [],
+      clubMembers: [],
+    },
+  ];
   return (
     <div className="w-full h-full">
       <ThemeProvider theme={getMuiTheme()}>
         <MUIDataTable
           title={""}
-          data={clubList || []}
+          data={clubList || data}
           columns={columns}
           options={options}
         />

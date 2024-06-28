@@ -28,11 +28,16 @@ export const getAllClubAPI = async () => {
   }
 };
 
-export const getAllClubPublicAPI = async (index = 0) => {
+export const getAllClubPublicAPI = async (data) => {
+  const { startIndex = 0, limit = 8 } = data;
   try {
-    const res = await axiosUrl.get(ROUTER_API.getAllClubPublicURL + index, {
-      index,
-    });
+    const res = await axiosUrl.get(
+      ROUTER_API.getAllClubPublicURL + startIndex,
+      {
+        startIndex: startIndex,
+        limit: limit,
+      }
+    );
     return res;
   } catch (error) {
     return error;

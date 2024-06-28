@@ -19,19 +19,25 @@ export const updateEventAPI = async (data) => {
   }
 };
 
-export const getAllEventAPI = async () => {
+export const getAllEventAPI = async (data) => {
   try {
-    const res = await axiosUrl.get(ROUTER_API.getAllEventURL);
+    const res = await axiosUrl.get(ROUTER_API.getAllEventURL, data);
     return res;
   } catch (error) {
     return error;
   }
 };
-export const getAllEventPublicAPI = async (index = 0) => {
+export const getAllEventPublicAPI = async (data) => {
+  const { startIndex = 0, limit = 8 } = data;
+
   try {
-    const res = await axiosUrl.get(ROUTER_API.getAllEventPublicURL + index, {
-      index,
-    });
+    const res = await axiosUrl.get(
+      ROUTER_API.getAllEventPublicURL + startIndex,
+      {
+        startIndex,
+        limit,
+      }
+    );
     return res;
   } catch (error) {
     return error;
@@ -64,9 +70,14 @@ export const getEventDetailsAPI = async (id) => {
   }
 };
 
-export const getEventByClubAPI = async (id) => {
+export const getEventByClubAPI = async (data) => {
+  const { id, startIndex, limit } = data;
   try {
-    const res = await axiosUrl.get(ROUTER_API.getEventByClubURL + "/" + id);
+    const res = await axiosUrl.get(ROUTER_API.getEventByClubURL + "/" + id, {
+      startIndex: startIndex || 0,
+      limit: limit || 8,
+    });
+    return res;
   } catch (error) {
     return error;
   }

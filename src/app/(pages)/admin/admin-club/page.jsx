@@ -7,16 +7,23 @@ import { useEffect } from "react";
 import { getAllClubAPI } from "@/app/_utils/services/club.api";
 import { setClubList, setIsGetClubList } from "@/app/_utils/store/admin.slice";
 import { toast } from "sonner";
+import { setClubTypeList } from "@/app/_utils/store/setting.slice";
+import { getClubTypeAPI } from "@/app/_utils/services/setting.api";
 
 export default function AdminClub() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.userAuth);
   const clubList = useSelector((state) => state.admin.clubList);
+  const clubTypeList = useSelector((state) => state.setting.clubTypeList);
   const isGetClubList = useSelector((state) => state.admin.isGetClubList);
   useEffect(() => {
     getAllClub();
   }, [isGetClubList]);
-
+  useEffect(() => {
+    if (!clubTypeList) {
+      getClubTypeList();
+    }
+  }, [clubTypeList]);
   const getAllClub = async () => {
     const res = await getAllClubAPI();
     if (res?.status == 200) {
@@ -30,6 +37,12 @@ export default function AdminClub() {
       toast("Xóa thành công!");
     } else {
       toast("Xóa không thành công!");
+    }
+  };
+  const getClubTypeList = async () => {
+    const res = await getClubTypeAPI();
+    if (res?.status == 200) {
+      dispatch(setClubTypeList(res?.data));
     }
   };
   return (

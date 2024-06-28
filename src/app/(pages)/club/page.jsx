@@ -21,27 +21,35 @@ export default function Club() {
     (state) => state.club.recruitmentClubList
   );
   const [disabled, setDisabled] = useState(false);
-
+  const [length, setLength] = useState(0);
   const startIndex = useSelector((state) => state.club.startIndex);
+
   useEffect(() => {
     getAllClubPublic();
   }, [startIndex]);
 
+  useEffect(() => {
+    if (!recruitmentClubList) {
+      getClubsByEventType();
+    }
+  }, [recruitmentClubList]);
+
   const getAllClubPublic = async () => {
     setDisabled(true);
-
-    const res = await getAllClubPublicAPI(startIndex);
+    const res = await getAllClubPublicAPI({ startIndex });
     if (res?.status == 200) {
-      dispatch(setClubPublicList(res?.data));
+      dispatch(setClubPublicList(res?.data?.data));
+      setLength(res?.data?.length);
     }
     setDisabled(false);
   };
-  // const getClubsByEventType = async () => {
-  //   const res = await getClubsByEventTypeAPI(startIndex);
-  //   if (res?.status == 200) {
-  //     dispatch(setRecruitmentClubList(res?.data));
-  //   }
-  // };
+
+  const getClubsByEventType = async () => {
+    const res = await getClubsByEventTypeAPI(4);
+    if (res?.status == 200) {
+      dispatch(setRecruitmentClubList(res?.data));
+    }
+  };
   const onClick = () => {
     dispatch(setStartIndex(startIndex + 8));
   };
@@ -52,6 +60,7 @@ export default function Club() {
         clubList={clubPublicList}
         onClick={onClick}
         disabled={disabled}
+        length={length}
       />
     </div>
   );

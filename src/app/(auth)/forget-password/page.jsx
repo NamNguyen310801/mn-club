@@ -58,7 +58,7 @@ export default function ForgetPassword() {
   };
 
   const forgetPass = async () => {
-    const res = await forgetPasswordAPI();
+    const res = await forgetPasswordAPI(email);
     if (res?.status == 200) {
       toast("OTP hợp lệ");
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -67,7 +67,7 @@ export default function ForgetPassword() {
     }
   };
   const verifyOtp = async () => {
-    const res = await verifyOtpAPI(otp);
+    const res = await verifyOtpAPI(email, otp);
     if (res?.status == 200) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       toast("OTP hợp lệ");
@@ -80,7 +80,7 @@ export default function ForgetPassword() {
       data?.newPassword?.length > 6 &&
       data?.cfNewPassword === data?.newPassword
     ) {
-      const res = await changePasswordAPI(data);
+      const res = await changePasswordAPI({ ...data, email });
       if (res?.status == 200) {
         toast("Thay đổi mật khẩu thành công!");
         setTimeout(() => {

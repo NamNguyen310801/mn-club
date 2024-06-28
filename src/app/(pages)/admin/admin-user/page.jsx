@@ -19,7 +19,7 @@ export default function UserList() {
 
   const getAllUser = async () => {
     const res = await getAllUserAPI();
-    if (res?.status) {
+    if (res?.status === 200) {
       dispatch(setUserList(res));
     }
   };

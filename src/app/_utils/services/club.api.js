@@ -2,7 +2,7 @@ const { default: axiosUrl } = require(".");
 const { default: ROUTER_API } = require("../routes");
 
 export const createClubAPI = async (data) => {
-  try {
+  try {    
     const res = await axiosUrl.post(ROUTER_API.createClubURL, data);
     return res;
   } catch (error) {
@@ -12,7 +12,21 @@ export const createClubAPI = async (data) => {
 
 export const updateClubAPI = async (data) => {
   try {
-    const res = await axiosUrl.put(ROUTER_API.updateClubURL, data);
+    const res = await axiosUrl.put(ROUTER_API.updateClubURL, {
+      clubId: data?.clubId,
+      code:data?.code,
+      name: data?.name,
+      email: data?.email,
+      avatar: data?.avatar,
+      description: data?.description,
+      foundingDate:data?.foundingDate,
+      memberCount: data?.memberCount,
+      fundAmount:  data?.fundAmount,
+      website: data?.website,
+      status: data?.status,
+      clubCategoryId: data?.setting?.settingId,
+      managerId: data?.manager?.userId,
+    });
     return res;
   } catch (error) {
     return error;

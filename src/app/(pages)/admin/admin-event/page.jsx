@@ -1,5 +1,5 @@
 "use client";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AdminHeader from "../_components/AdminHeader";
 import EventTop from "./_components/EventTop";
 import EventTable from "./_components/EventTable";
@@ -16,11 +16,12 @@ import { getEventTypeAPI } from "@/app/_utils/services/setting.api";
 import { setEventTypeList } from "@/app/_utils/store/setting.slice";
 
 export default function AdminEvent() {
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.auth.userAuth);
   const eventList = useSelector((state) => state.admin.eventList);
   const isGetEventList = useSelector((state) => state.admin.isGetEventList);
   const eventTypeList = useSelector((state) => state.setting.eventTypeList);
-
   useEffect(() => {
     getAllEvent();
   }, [isGetEventList]);
@@ -32,7 +33,7 @@ export default function AdminEvent() {
   const getAllEvent = async () => {
     const res = await getAllEventAPI();
     if (res?.status == 200) {
-      dispatch(setEventList(res));
+      dispatch(setEventList(res?.data));
     }
   };
   const handleDelete = async (rowData) => {

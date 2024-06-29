@@ -34,7 +34,7 @@ export default function ClubTable(props) {
       name: "setting",
       label: "Loại CLB",
       options: {
-        customBodyRender: (value) => <div className="">{value}</div>,
+        customBodyRender: (value) => <div className="">{value?.name}</div>,
       },
     },
     {
@@ -110,7 +110,8 @@ export default function ClubTable(props) {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div className="flex items-center justify-between px-4">
-              <EditClubDialog dataRow={data[tableMeta?.rowIndex]} />
+{clubList&& <EditClubDialog dataRow={clubList[tableMeta?.rowIndex]} />
+            }
               <DeleteAlertDialog
                 onClick={() => handleDelete(tableMeta?.rowIndex)}
               />
@@ -203,8 +204,6 @@ export default function ClubTable(props) {
         managerId: "1",
         fullName: "Nguy",
       },
-      clubTeams: [],
-      clubMembers: [],
     },
     {
       clubId: 4,
@@ -224,8 +223,6 @@ export default function ClubTable(props) {
         managerId: "1",
         fullName: "Nguy",
       },
-      clubTeams: [],
-      clubMembers: [],
     },
   ];
   return (

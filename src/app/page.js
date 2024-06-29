@@ -51,7 +51,7 @@ export default function Home() {
   const getAllPopularEvent = async () => {
     const res = await getAllPopularEventAPI(6);
     if (res?.status == 200) {
-      dispatch(setPopularEventList(res?.data));
+      dispatch(setPopularEventList(res?.data?.data));
     }
   };
 

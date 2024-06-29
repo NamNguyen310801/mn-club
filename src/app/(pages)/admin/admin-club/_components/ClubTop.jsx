@@ -19,6 +19,7 @@ import { getBase64 } from "@/app/_utils/functions/functions";
 import { createClubAPI } from "@/app/_utils/services/club.api";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsGetClubList } from "@/app/_utils/store/admin.slice";
+import moment from "moment";
 export default function ClubTop() {
   const dispatch = useDispatch();
   const isGetClubList = useSelector((state) => state.admin.isGetClubList);
@@ -26,33 +27,44 @@ export default function ClubTop() {
   const toDay = new Date();
 
   const defaultData = {
+    clubId:0,
     code: "",
     name: "",
     email: "",
     avatar: "",
-    setting: "",
-    description: "",
+    setting: {
+      settingId: "",
+      name: "",
+    },
+    description: "aa",
     foundingDate: toDay,
     memberCount: 0,
     fundAmount: 0,
     website: "",
     clubCategoryId: 1,
     status: "Active",
-    manager: {
-      managerId: "",
-      fullName: "",
-    },
+    // manager: {
+    //   userId: "",
+    //   fullName: "",
+    // },
+    managerId:''
   };
 
   const [data, setData] = useState(defaultData);
-
   const handleUploadImage = async (e) => {
-    const image = await getBase64(e.target.files[0]);
-    setData((prev) => ({ ...prev, avatar: image }));
+    const file = await getBase64(e.target.files[0]);
+    // const imageUrl = URL.createObjectURL(file);
+    setData((prev) => ({ ...prev, avatar: file }));
   };
 
   const createClub = async () => {
-    const res = await createClubAPI(data);
+    
+    const res = await createClubAPI({...data,
+      clubCategoryId:data?.setting?.settingId,
+      setting:data?.setting?.settingId,
+      foundingDate:moment(data?.foundingDate).format()
+    });  
+    
     if (res?.status == 200) {
       toast("Thêm mới câu lạc bộ thành công");
       dispatch(setIsGetClubList(!isGetClubList));
@@ -95,16 +107,17 @@ export default function ClubTop() {
               setData((pre) => ({ ...pre, code: e.target.value }))
             }
           />
-          {/* Manager */}
+          {/* managerId */}
           <FormItem
             name="Chủ nhiệm:"
-            id="manager"
-            value={data?.manager?.fullName}
+            id="managerId"
+            value={data?.managerId}
             placeHolder="Chủ nhiệm"
             type="text"
             className="w-1/2"
             onChange={(e) =>
-              setData((pre) => ({ ...pre, manager: e.target.value }))
+              setData((pre) => ({ ...pre, managerId:e.target.value
+             }))
             }
           />
           {/* ClubCate */}
@@ -114,8 +127,9 @@ export default function ClubTop() {
             </Label>
             <Select
               className="border-b"
+              value={JSON.stringify(data?.setting)}
               onValueChange={(value) =>
-                setData((pre) => ({ ...pre, setting: value }))
+                setData((pre) => ({ ...pre, setting: JSON.parse(value) }))
               }>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Chọn Loại Câu Lạc Bộ" />
@@ -124,7 +138,7 @@ export default function ClubTop() {
                 <SelectGroup>
                   <SelectLabel>Loại Câu Lạc Bộ</SelectLabel>
                   {clubTypeList?.map((item, index) => (
-                    <SelectItem value={item?.name} key={index}>
+                    <SelectItem value={JSON.stringify(item)} key={index}>
                       {item?.name}
                     </SelectItem>
                   ))}

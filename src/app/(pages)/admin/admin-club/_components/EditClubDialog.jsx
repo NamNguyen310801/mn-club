@@ -41,6 +41,7 @@ export default function EditClubDialog({ dataRow }) {
     }
   };
 
+
   return (
     <Dialog className="bg-black/20">
       <div className="w-full flex p-4 items-center justify-between">
@@ -87,6 +88,7 @@ export default function EditClubDialog({ dataRow }) {
               setData((pre) => ({
                 ...pre,
                 manager: {
+                  ...data?.manager?.managerId,
                   fullName: e.target.value,
                 },
               }))
@@ -94,13 +96,14 @@ export default function EditClubDialog({ dataRow }) {
           />
           {/* ClubCate */}
           <div className="flex flex-col items-start gap-y-3">
-            <Label htmlFor="clubCategory" className="">
+            <Label htmlFor="clubCategoryId" className="">
               Loại Câu Lạc Bộ:
             </Label>
             <Select
               className="border-b"
+              value={JSON.stringify(data?.setting)}
               onValueChange={(value) =>
-                setData((pre) => ({ ...pre, setting: value }))
+                setData((pre) => ({ ...pre, setting: JSON.parse(value) }))
               }>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Chọn Loại Câu Lạc Bộ" />
@@ -109,8 +112,8 @@ export default function EditClubDialog({ dataRow }) {
                 <SelectGroup>
                   <SelectLabel>Loại Câu Lạc Bộ</SelectLabel>
                   {clubTypeList?.map((item, index) => (
-                    <SelectItem value={item?.value} key={index}>
-                      {item?.value}
+                    <SelectItem value={JSON.stringify(item)} key={index}>
+                      {item?.name}
                     </SelectItem>
                   ))}
                 </SelectGroup>
@@ -219,7 +222,7 @@ export default function EditClubDialog({ dataRow }) {
         <div
           className="w-full flex items-center justify-center mt-auto"
           onClick={updateClub}>
-          <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">Thêm</Button>
+          <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">Lưu</Button>
         </div>
       </DialogContent>
     </Dialog>

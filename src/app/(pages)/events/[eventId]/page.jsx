@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 export default function EventDetail({ params }) {
   const [event, setEvent] = useState();
   useEffect(() => {
-    // geteventDetail();
+     geteventDetail();
   }, []);
   const getEventDetail = async () => {
     const res = await getEventDetailsAPI(params.eventId);

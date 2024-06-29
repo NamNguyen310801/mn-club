@@ -12,6 +12,7 @@ import {
 import {
   getAllEventPublicAPI,
   getAllPopularEventAPI,
+  getAllEventFeaturedAPI,
 } from "@/app/_utils/services/event.api";
 export default function Event() {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
@@ -45,9 +46,10 @@ export default function Event() {
 
   //
   const getAllPopularEvent = async () => {
-    const res = await getAllPopularEventAPI();
+    const res = await getAllEventFeaturedAPI();
     if (res?.status == 200) {
-      dispatch(setPopularEventList(res?.data));
+      dispatch(setPopularEventList(res?.data)); 
+      console.log(res?.data);
     }
   };
 

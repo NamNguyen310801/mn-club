@@ -45,7 +45,7 @@ export default function Club() {
   };
 
   const getClubsByEventType = async () => {
-    const res = await getClubsByEventTypeAPI(4);
+    const res = await getClubsByEventTypeAPI(5);
     if (res?.status == 200) {
       dispatch(setRecruitmentClubList(res?.data));
     }

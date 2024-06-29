@@ -19,6 +19,7 @@ export default function Event(props) {
   const onFilter = (index) => {
     setIsFilter(index);
   };
+  console.log(listItem);
   return (
     <div className="flex flex-col gap-y-2 py-5 md:py-8 xl:py-20">
       <h3 className="text-center text-[36px] font-semibold capitalize">

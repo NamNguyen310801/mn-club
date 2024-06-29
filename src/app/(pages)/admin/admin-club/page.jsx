@@ -9,7 +9,6 @@ import { setClubList, setIsGetClubList } from "@/app/_utils/store/admin.slice";
 import { toast } from "sonner";
 import { setClubTypeList } from "@/app/_utils/store/setting.slice";
 import { getClubTypeAPI } from "@/app/_utils/services/setting.api";
-
 export default function AdminClub() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.userAuth);

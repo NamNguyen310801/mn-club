@@ -11,15 +11,7 @@ export default function EventTable({ eventList, onDelete }) {
     else if (approve === "reject") return "Từ chối";
   };
   const columns = [
-    {
-      name: "eventID",
-      label: "NO",
-      options: {
-        filter: false,
-      },
-    },
-
-    {
+        {
       name: "name",
       label: "Tên Sự Kiện",
       options: {
@@ -96,9 +88,13 @@ export default function EventTable({ eventList, onDelete }) {
       name: "clubName",
       label: "Đơn Vị Tổ Chức",
     },
+    
     {
       name: "setting",
       label: "Loại Sự Kiện",
+      options: {
+        customBodyRender: (value) => <div className="">{value?.name}</div>,
+      },
     },
     {
       name: "status",
@@ -114,7 +110,8 @@ export default function EventTable({ eventList, onDelete }) {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div className="flex items-center justify-between px-4">
-              <EditEventDialog dataRow={data[tableMeta?.rowIndex]} />
+{eventList&& <EditEventDialog dataRow={eventList[tableMeta?.rowIndex]} />}
+
               <DeleteAlertDialog
                 onClick={() => handleDelete(tableMeta?.rowIndex)}
               />

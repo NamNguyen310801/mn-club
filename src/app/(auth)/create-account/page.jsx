@@ -26,15 +26,15 @@ export default function CreateAccount() {
   const [open, setOpen] = useState(false);
 
   const [data, setData] = useState({
-    name: "",
+    userName: "",
     email: "",
-    student_code: "",
+    // student_code: "",
     password: "",
     confirmPassword: "",
   });
   const [isPassword, setIsPassword] = useState(true);
   const [isCFPassword, setIsCFPassword] = useState(true);
-  const errName = data?.name && data?.name?.length < 6;
+  const errName = data?.userName && data?.userName?.length < 6;
   const errPassword = data?.password === data?.confirmPassword;
   const form = useForm({
     defaultValues: data,
@@ -42,7 +42,6 @@ export default function CreateAccount() {
 
   const router = useRouter();
   const onCreateAccount = async (dt) => {
-    console.log(dt);
     if (dt?.password !== dt?.confirmPassword) {
       toast("Mật khẩu không khớp!");
     } else {
@@ -92,7 +91,7 @@ export default function CreateAccount() {
             className="flex flex-col gap-y-4 w-full md:mt-4">
             <FormField
               control={form.control}
-              name="name"
+              name="userName"
               render={({ field }) => (
                 <FormItem className="space-y-2">
                   <FormLabel>Họ và Tên</FormLabel>
@@ -130,7 +129,7 @@ export default function CreateAccount() {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="student_code"
               render={({ field }) => (
@@ -147,7 +146,7 @@ export default function CreateAccount() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="password"

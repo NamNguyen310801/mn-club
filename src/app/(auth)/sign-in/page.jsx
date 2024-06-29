@@ -46,22 +46,22 @@ export default function SignIn() {
     const res = await signInAPI(dt);
     if (res?.status == 200) {
       if (res?.data?.accessToken && res?.data?.refreshToken) {
-        const decoded = jwtDecode(res?.data?.accessToken);
-        if (decoded?.id) {
-          handleGetDetailsUser(
-            decoded?.id,
-            res?.data?.accessToken,
-            res?.data?.refreshToken
-          );
-        }
-        sessionStorage.setItem(
-          "accessToken",
-          JSON.stringify(res?.data?.accessToken)
-        );
-        sessionStorage.setItem(
-          "refreshToken",
-          JSON.stringify(res?.data?.refreshToken)
-        );
+        // const decoded = jwtDecode(res?.data?.accessToken);
+        // if (decoded?.id) {
+        //   handleGetDetailsUser(
+        //     decoded?.id,
+        //     res?.data?.accessToken,
+        //     res?.data?.refreshToken
+        //   );
+        // }
+        // sessionStorage.setItem(
+        //   "accessToken",
+        //   JSON.stringify(res?.data?.accessToken)
+        // );
+        // sessionStorage.setItem(
+        //   "refreshToken",
+        //   JSON.stringify(res?.data?.refreshToken)
+        // );
         toast("Đăng nhập thành công");
         setLoader(false);
         setTimeout(() => {

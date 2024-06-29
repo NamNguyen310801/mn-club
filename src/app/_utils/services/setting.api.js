@@ -1,3 +1,5 @@
+const { default: axiosUrl } = require(".");
+const { default: ROUTER_API } = require("../routes");
 export const getClubTypeAPI = async () => {
   try {
     const res = await axiosUrl.get(ROUTER_API.getClubTypeURL);

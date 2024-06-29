@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import moment from "moment";
 
 export default function EventTop() {
   const dispatch = useDispatch();
@@ -25,8 +26,8 @@ export default function EventTop() {
   const eventTypeList = useSelector((state) => state.setting.eventTypeList);
   const toDay = new Date();
   const defaultData = {
-    eventID: "",
     name: "",
+    userId: "",
     email: "",
     approveStatus: "pending",
     startDate: toDay,
@@ -39,10 +40,12 @@ export default function EventTop() {
   const [data, setData] = useState(defaultData);
   const onSubmit = () => {
     console.log(data);
+    createEvent();
     toast("submit");
   };
   const createEvent = async () => {
-    const res = await createEventAPI(data);
+    console.log({...data,startDate:moment(data?.startDate).format(),endDate:moment(data?.endDate).format(),setting:data?.setting?.settingId});
+    const res = await createEventAPI({...data,startDate:moment(data?.startDate).format(),endDate:moment(data?.endDate).format(),setting:data?.setting?.settingId});
     if (res?.status == 200) {
       toast("Thêm mới sự kiện thành công!");
       dispatch(setIsGetEventList(!isGetEventList));
@@ -126,11 +129,13 @@ export default function EventTop() {
             </Label>
             <Select
               className="border-b"
+              value={JSON.stringify(data?.setting)}
+
               onValueChange={(value) =>
                 setData((pre) => ({
                   ...pre,
-                  setting: value?.name,
-                  eventTypeId: value?.settingId,
+                  setting: JSON.parse(value) ,
+                  eventTypeId: JSON.parse(value)?.settingId ,
                 }))
               }>
               <SelectTrigger className="w-full">
@@ -140,7 +145,7 @@ export default function EventTop() {
                 <SelectGroup>
                   <SelectLabel>Loại Sự Kiện</SelectLabel>
                   {eventTypeList?.map((item, index) => (
-                    <SelectItem value={item} key={index}>
+                    <SelectItem value={JSON.stringify(item)} key={index}>
                       {item?.name}
                     </SelectItem>
                   ))}
@@ -178,7 +183,7 @@ export default function EventTop() {
         </form>
         <div
           className="w-full flex items-center justify-center mt-auto"
-          onClick={onSubmit}>
+          onClick={createEvent}>
           <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">Thêm</Button>
         </div>
       </DialogContent>

@@ -38,14 +38,13 @@ export default function EventTop() {
     status: "Not Yet",
   };
   const [data, setData] = useState(defaultData);
-  const onSubmit = () => {
-    console.log(data);
-    createEvent();
-    toast("submit");
-  };
   const createEvent = async () => {
-    console.log({...data,startDate:moment(data?.startDate).format(),endDate:moment(data?.endDate).format(),setting:data?.setting?.settingId});
-    const res = await createEventAPI({...data,startDate:moment(data?.startDate).format(),endDate:moment(data?.endDate).format(),setting:data?.setting?.settingId});
+    const res = await createEventAPI({
+      ...data,
+      startDate: moment(data?.startDate).format(),
+      endDate: moment(data?.endDate).format(),
+      setting: data?.setting?.settingId,
+    });
     if (res?.status == 200) {
       toast("Thêm mới sự kiện thành công!");
       dispatch(setIsGetEventList(!isGetEventList));
@@ -53,8 +52,15 @@ export default function EventTop() {
       toast("Thêm mới sự kiện thất bại!");
     }
   };
+  const [open, setOpen] = useState(false);
+  const onOpenModal = () => {
+    setOpen(!open);
+    if (open) {
+      setData(defaultData);
+    }
+  };
   return (
-    <Dialog className="bg-black/20">
+    <Dialog className="bg-black/20" open={open} onOpenChange={onOpenModal}>
       <div className="w-full flex p-4 items-center justify-between">
         <DialogTrigger asChild>
           <ButtonAdd />
@@ -130,12 +136,11 @@ export default function EventTop() {
             <Select
               className="border-b"
               value={JSON.stringify(data?.setting)}
-
               onValueChange={(value) =>
                 setData((pre) => ({
                   ...pre,
-                  setting: JSON.parse(value) ,
-                  eventTypeId: JSON.parse(value)?.settingId ,
+                  setting: JSON.parse(value),
+                  eventTypeId: JSON.parse(value)?.settingId,
                 }))
               }>
               <SelectTrigger className="w-full">

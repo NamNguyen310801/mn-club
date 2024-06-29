@@ -12,6 +12,7 @@ import * as XLSX from "xlsx";
 export default function StudentTop() {
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
   const onImport = () => {
     console.log(data);
     toast("submit");
@@ -36,8 +37,15 @@ export default function StudentTop() {
 
     reader.readAsArrayBuffer(file);
   };
+  const onOpenModal = () => {
+    setOpen(!open);
+    if (open) {
+      setData([]);
+      setProgress(0);
+    }
+  };
   return (
-    <Dialog className="bg-black/20">
+    <Dialog className="bg-black/20" open={open} onOpenChange={onOpenModal}>
       <div className="w-full flex p-4 items-center justify-between">
         <DialogTrigger asChild>
           <ButtonImportData />

@@ -27,7 +27,7 @@ export default function ClubTop() {
   const toDay = new Date();
 
   const defaultData = {
-    clubId:0,
+    clubId: 0,
     code: "",
     name: "",
     email: "",
@@ -47,7 +47,7 @@ export default function ClubTop() {
     //   userId: "",
     //   fullName: "",
     // },
-    managerId:''
+    managerId: "",
   };
 
   const [data, setData] = useState(defaultData);
@@ -58,13 +58,13 @@ export default function ClubTop() {
   };
 
   const createClub = async () => {
-    
-    const res = await createClubAPI({...data,
-      clubCategoryId:data?.setting?.settingId,
-      setting:data?.setting?.settingId,
-      foundingDate:moment(data?.foundingDate).format()
-    });  
-    
+    const res = await createClubAPI({
+      ...data,
+      clubCategoryId: data?.setting?.settingId,
+      setting: data?.setting?.settingId,
+      foundingDate: moment(data?.foundingDate).format(),
+    });
+
     if (res?.status == 200) {
       toast("Thêm mới câu lạc bộ thành công");
       dispatch(setIsGetClubList(!isGetClubList));
@@ -72,9 +72,15 @@ export default function ClubTop() {
       toast("Thêm mới câu lạc bộ thất bại");
     }
   };
-
+  const [open, setOpen] = useState(false);
+  const onOpenModal = () => {
+    setOpen(!open);
+    if (open) {
+      setData(defaultData);
+    }
+  };
   return (
-    <Dialog className="bg-black/20">
+    <Dialog className="bg-black/20" open={open} onOpenChange={onOpenModal}>
       <div className="w-full flex p-4 items-center justify-between">
         <DialogTrigger asChild>
           <ButtonAdd />
@@ -116,8 +122,7 @@ export default function ClubTop() {
             type="text"
             className="w-1/2"
             onChange={(e) =>
-              setData((pre) => ({ ...pre, managerId:e.target.value
-             }))
+              setData((pre) => ({ ...pre, managerId: e.target.value }))
             }
           />
           {/* ClubCate */}

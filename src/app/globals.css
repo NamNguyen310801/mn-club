@@ -74,3 +74,30 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* .custom-scrollbar {
+  @apply overflow-auto h-full;
+} */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #926464;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #b94747 #f1f1f1;
+}

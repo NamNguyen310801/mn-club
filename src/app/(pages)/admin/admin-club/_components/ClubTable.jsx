@@ -110,11 +110,12 @@ export default function ClubTable(props) {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div className="flex items-center justify-between px-4">
-{clubList&& <EditClubDialog dataRow={clubList[tableMeta?.rowIndex]} />
-            }
-              <DeleteAlertDialog
+              {clubList && (
+                <EditClubDialog dataRow={clubList[tableMeta?.rowIndex]} />
+              )}
+              {/* <DeleteAlertDialog
                 onClick={() => handleDelete(tableMeta?.rowIndex)}
-              />
+              /> */}
             </div>
           );
         },
@@ -181,10 +182,10 @@ export default function ClubTable(props) {
       },
     });
 
-  const handleDelete = async (rowIndex) => {
-    const rowData = data[rowIndex];
-    await onDelete(rowData);
-  };
+  // const handleDelete = async (rowIndex) => {
+  //   const rowData = data[rowIndex];
+  //   await onDelete(rowData);
+  // };
   const data = [
     {
       clubId: 4,

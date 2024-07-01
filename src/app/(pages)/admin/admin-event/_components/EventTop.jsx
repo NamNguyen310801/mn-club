@@ -19,6 +19,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import moment from "moment";
+import { getBase64 } from "@/app/_utils/functions/functions";
 
 export default function EventTop() {
   const dispatch = useDispatch();
@@ -28,29 +29,34 @@ export default function EventTop() {
   const defaultData = {
     name: "",
     userId: "",
-    email: "",
     approveStatus: "pending",
     startDate: toDay,
     endDate: "",
     location: "",
-    clubName: "",
     eventTypeId: "",
     status: "Not Yet",
+    banner: "",
   };
+
   const [data, setData] = useState(defaultData);
+  const handleUploadImage = async (e) => {
+    const file = await getBase64(e.target.files[0]);
+    setData((prev) => ({ ...prev, banner: file }));
+  };
   const createEvent = async () => {
-    const res = await createEventAPI({
-      ...data,
-      startDate: moment(data?.startDate).format(),
-      endDate: moment(data?.endDate).format(),
-      setting: data?.setting?.settingId,
-    });
-    if (res?.status == 200) {
-      toast("Thêm mới sự kiện thành công!");
-      dispatch(setIsGetEventList(!isGetEventList));
-    } else {
-      toast("Thêm mới sự kiện thất bại!");
-    }
+    console.log(data);
+    // const res = await createEventAPI({
+    //   ...data,
+    //   startDate: moment(data?.startDate).format(),
+    //   endDate: moment(data?.endDate).format(),
+    //   setting: data?.setting?.settingId,
+    // });
+    // if (res?.status == 200) {
+    //   toast("Thêm mới sự kiện thành công!");
+    //   dispatch(setIsGetEventList(!isGetEventList));
+    // } else {
+    //   toast("Thêm mới sự kiện thất bại!");
+    // }
   };
   const [open, setOpen] = useState(false);
   const onOpenModal = () => {
@@ -185,6 +191,15 @@ export default function EventTop() {
               </div>
             </RadioGroup>
           </div>
+          <FormItem
+            name="Banner:"
+            id="banner"
+            className="col-span-2"
+            value={data?.banner}
+            placeHolder="Banner"
+            type="file"
+            onChange={(e) => handleUploadImage(e)}
+          />
         </form>
         <div
           className="w-full flex items-center justify-center mt-auto"

@@ -18,4 +18,4 @@ export { default as ButtonView } from "./ButtonView";
 export { default as Success } from "./Success";
 export { default as TextEditor } from "./TextEditor";
 export { default as VerifyAccountAlert } from "./VerifyAccountAlert";
-export { default as EventDetail } from "./EventDetail";
+export { default as EventDetailItem } from "./EventDetailItem";

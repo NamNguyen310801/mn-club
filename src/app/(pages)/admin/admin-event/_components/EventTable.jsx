@@ -3,6 +3,7 @@ import MUIDataTable from "mui-datatables";
 import EditEventDialog from "./EditEventDialog";
 import DeleteAlertDialog from "@/components/_personal/DeleteAlertDialog";
 import moment from "moment";
+import ViewEventDialog from "./ViewEventDialog";
 
 export default function EventTable({ eventList, onDelete }) {
   const getApprove = (approve) => {
@@ -11,7 +12,7 @@ export default function EventTable({ eventList, onDelete }) {
     else if (approve === "reject") return "Từ chối";
   };
   const columns = [
-        {
+    {
       name: "name",
       label: "Tên Sự Kiện",
       options: {
@@ -88,7 +89,7 @@ export default function EventTable({ eventList, onDelete }) {
       name: "clubName",
       label: "Đơn Vị Tổ Chức",
     },
-    
+
     {
       name: "setting",
       label: "Loại Sự Kiện",
@@ -110,21 +111,26 @@ export default function EventTable({ eventList, onDelete }) {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div className="flex items-center justify-between px-4">
-{eventList&& <EditEventDialog dataRow={eventList[tableMeta?.rowIndex]} />}
+              {data && (
+                <>
+                  <EditEventDialog dataRow={data[tableMeta?.rowIndex]} />
+                  <ViewEventDialog dataRow={data[tableMeta?.rowIndex]} />
+                </>
+              )}
 
-              <DeleteAlertDialog
+              {/* <DeleteAlertDialog
                 onClick={() => handleDelete(tableMeta?.rowIndex)}
-              />
+              /> */}
             </div>
           );
         },
       },
     },
   ];
-  const handleDelete = async (rowIndex) => {
-    const rowData = data[rowIndex];
-    await onDelete(rowData);
-  };
+  // const handleDelete = async (rowIndex) => {
+  //   const rowData = data[rowIndex];
+  //   await onDelete(rowData);
+  // };
 
   const options = {
     selectableRows: "none",

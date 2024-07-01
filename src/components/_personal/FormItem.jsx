@@ -27,7 +27,7 @@ export default function FormItem({
           />
         </>
       ) : (
-        <div className="flex items-start gap-x-3">
+        <div className="flex items-start gap-x-3 w-full">
           <Label className="text-right">{name}</Label>
           <Input
             id={id}
@@ -36,13 +36,20 @@ export default function FormItem({
             onChange={(e) => onChange(e)}
           />
           <div className={`flex ${value ? "items-center" : "items-start"}`}>
-            {value && (
-              <img
-                src={value}
-                alt={name}
-                className="w-10 h-10 rounded-full object-center object-cover"
-              />
-            )}
+            {value &&
+              (id === "banner" ? (
+                <img
+                  src={value}
+                  alt={name}
+                  className="h-[90px] w-[160px] rounded-md object-cover"
+                />
+              ) : (
+                <img
+                  src={value}
+                  alt={name}
+                  className="w-10 h-10 rounded-full object-center object-cover"
+                />
+              ))}
             <Label htmlFor={id} className="ml-3 min-w-20 cursor-pointer">
               Chọn
             </Label>

@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Calendar, Check, Copy, MapPin, Pencil, X } from "lucide-react";
+import { useSelector } from "react-redux";
 
-export default function EventDetail({ dataRow }) {
+export default function EventDetailItem({ dataRow }) {
+  const user = useSelector((state) => state.auth.userAuth);
   const [data, setData] = useState();
   useEffect(() => {
     setData(dataRow);
@@ -75,29 +77,39 @@ export default function EventDetail({ dataRow }) {
           </div>
         </div>
         <div className="flex flex-col gap-y-3 justify-center">
-          <Button className="bg-green-700 hover:bg-green-600 text-white">
-            <Check color="#ffffff" size={16} />
-            <span className="ml-1">Duyệt sự kiện</span>
-          </Button>
-          <Button className="bg-red-600 hover:bg-red-500 text-white">
-            <X color="#ffffff" size={16} />
-            <span className="ml-1">Từ chối sự kiện</span>
-          </Button>
+          {user?.role === 1 && (
+            <>
+              <Button className="bg-green-700 hover:bg-green-600 text-white">
+                <Check color="#ffffff" size={16} />
+                <span className="ml-1">Duyệt sự kiện</span>
+              </Button>
+              <Button className="bg-red-600 hover:bg-red-500 text-white">
+                <X color="#ffffff" size={16} />
+                <span className="ml-1">Từ chối sự kiện</span>
+              </Button>
+            </>
+          )}
           <Button className="bg-blue-600 hover:bg-blue-500 text-white">
             <Pencil color="#ffffff" size={16} />
-            <span className="ml-1">Chỉnh sửa sự kiện</span>
+            <span className="ml-1">Đăng ký tham gia</span>
           </Button>
-          <Button className="bg-gray-500 hover:bg-gray-400 text-white">
+          {/* <Button className="bg-gray-500 hover:bg-gray-400 text-white">
             <Copy color="#ffffff" size={16} />
             <span className="ml-1">Sao chép sự kiện</span>
-          </Button>
+          </Button> */}
         </div>
       </div>
       {/*  Detail*/}
-      <div className="flex flex-col">
-        <h3>Chi tiết sự kiện</h3>
-        <div className="flex flex-col">
-          <p dangerouslySetInnerHTML={markup} />
+      <div className="grid grid-cols-3 gap-x-8 py-10">
+        <div className="flex flex-col items-start col-span-2 justify-start">
+          <h3 className="font-semibold">Chi tiết sự kiện</h3>
+          <div className="flex flex-col">
+            <p dangerouslySetInnerHTML={markup} />
+          </div>
+        </div>
+        <div className="flex flex-col items-start justify-start">
+          <h3 className="font-semibold">Video sự kiện</h3>
+          <div className="flex flex-col">video o day</div>
         </div>
       </div>
     </div>

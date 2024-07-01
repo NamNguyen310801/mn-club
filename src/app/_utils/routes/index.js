@@ -35,6 +35,7 @@ const ROUTER_API = {
   getDetailEventURL: "/api/Event/Detail",
   getEventByClubURL: "/api/Event/GetEventbyClub",
   deleteEventURL: "",
+  updateEventURL:"/api/Event/UpdateDataEvent/",
 
   // News
   createNewsURL: "/",

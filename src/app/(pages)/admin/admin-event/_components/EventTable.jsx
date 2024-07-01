@@ -111,10 +111,10 @@ export default function EventTable({ eventList, onDelete }) {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div className="flex items-center justify-between px-4">
-              {data && (
+              {eventList && (
                 <>
-                  <EditEventDialog dataRow={data[tableMeta?.rowIndex]} />
-                  <ViewEventDialog dataRow={data[tableMeta?.rowIndex]} />
+                  <EditEventDialog dataRow={eventList[tableMeta?.rowIndex]} />
+                  <ViewEventDialog dataRow={eventList[tableMeta?.rowIndex]} />
                 </>
               )}
 

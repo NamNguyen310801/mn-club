@@ -23,19 +23,28 @@ import { getBase64 } from "@/app/_utils/functions/functions";
 
 export default function EventTop() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.userAuth);
+
   const isGetEventList = useSelector((state) => state.admin.isGetEventList);
   const eventTypeList = useSelector((state) => state.setting.eventTypeList);
   const toDay = new Date();
   const defaultData = {
     name: "",
-    userId: "",
-    approveStatus: "pending",
+    userId: user?.userId ||"e4f125a1-1020-4931-bcbc-fc262b2e8abb",
+    club: {
+clubId:'',
+clubName:''
+    },
     startDate: toDay,
     endDate: "",
     location: "",
     eventTypeId: "",
-    status: "Not Yet",
+    description: "a",
     banner: "",
+    setting: {
+      settingId: "",
+      name: "",
+    },
   };
 
   const [data, setData] = useState(defaultData);
@@ -44,19 +53,20 @@ export default function EventTop() {
     setData((prev) => ({ ...prev, banner: file }));
   };
   const createEvent = async () => {
-    console.log(data);
-    // const res = await createEventAPI({
-    //   ...data,
-    //   startDate: moment(data?.startDate).format(),
-    //   endDate: moment(data?.endDate).format(),
-    //   setting: data?.setting?.settingId,
-    // });
-    // if (res?.status == 200) {
-    //   toast("Thêm mới sự kiện thành công!");
-    //   dispatch(setIsGetEventList(!isGetEventList));
-    // } else {
-    //   toast("Thêm mới sự kiện thất bại!");
-    // }
+    const res = await createEventAPI({
+      ...data,
+      startDate: moment(data?.startDate).format(),
+      endDate: moment(data?.endDate).format(),
+      clubId: data?.club?.clubId,
+    });
+    console.log(res);
+
+    if (res?.status == 200) {
+      toast("Thêm mới sự kiện thành công!");
+      dispatch(setIsGetEventList(!isGetEventList));
+    } else {
+      toast("Thêm mới sự kiện thất bại!");
+    }
   };
   const [open, setOpen] = useState(false);
   const onOpenModal = () => {
@@ -91,11 +101,13 @@ export default function EventTop() {
           <FormItem
             name="Đơn vị Tổ Chức:"
             id="clubName"
-            value={data?.clubName}
+            value={data?.club?.clubId}
             placeHolder="Đơn vị Tổ Chức"
             type="text"
             onChange={(e) =>
-              setData((pre) => ({ ...pre, clubName: e.target.value }))
+              setData((pre) => ({ ...pre, club: {
+                clubId:e.target.value
+              } }))
             }
           />
           <div className="flex flex-col gap-y-3 relative">
@@ -145,8 +157,8 @@ export default function EventTop() {
               onValueChange={(value) =>
                 setData((pre) => ({
                   ...pre,
-                  setting: JSON.parse(value),
-                  eventTypeId: JSON.parse(value)?.settingId,
+                  setting: Boolean(value)? JSON.parse(value) :defaultData?.setting,
+                  eventTypeId:Boolean(value)? JSON.parse(value)?.settingId:defaultData?.eventTypeId,
                 }))
               }>
               <SelectTrigger className="w-full">
@@ -164,33 +176,7 @@ export default function EventTop() {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-col items-start gap-y-3 col-span-2">
-            <Label htmlFor="role" className="">
-              Trạng Thái:
-            </Label>
-            <RadioGroup
-              defaultValue="Not Yet"
-              className="flex justify-between items-center w-full px-4"
-              onValueChange={(value) =>
-                setData((pre) => ({
-                  ...pre,
-                  status: value,
-                }))
-              }>
-              <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="Not Yet" id="status_1" />
-                <Label htmlFor="status_1">Chưa diễn ra</Label>
-              </div>
-              <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="Happening" id="status_2" />
-                <Label htmlFor="status_2">Đang diễn ra</Label>
-              </div>
-              <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="Ended" id="status_2" />
-                <Label htmlFor="status_2">Đã kết thúc</Label>
-              </div>
-            </RadioGroup>
-          </div>
+          
           <FormItem
             name="Banner:"
             id="banner"

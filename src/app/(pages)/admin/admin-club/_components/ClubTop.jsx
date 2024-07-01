@@ -134,7 +134,7 @@ export default function ClubTop() {
               className="border-b"
               value={JSON.stringify(data?.setting)}
               onValueChange={(value) =>
-                setData((pre) => ({ ...pre, setting: JSON.parse(value) }))
+                setData((pre) => ({ ...pre, setting: Boolean(value)? JSON.parse(value):defaultData?.setting }))
               }>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Chọn Loại Câu Lạc Bộ" />

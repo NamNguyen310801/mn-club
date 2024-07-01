@@ -3,16 +3,39 @@ const { default: ROUTER_API } = require("../routes");
 
 export const createEventAPI = async (data) => {
   try {
-    const res = await axiosUrl.post(ROUTER_API.createEventURL, data);
+   
+    const res = await axiosUrl.post(ROUTER_API.createEventURL, {
+      clubId: data?.clubId,
+      userId: data?.userId,
+      name: data?.name,
+      description: data?.description,
+      banner: data?.banner,
+      startDate: data?.startDate,
+      endDate: data?.endDate,
+      location: data?.location,
+      eventTypeId: data?.eventTypeId
+    });
     return res;
   } catch (error) {
     return error;
   }
 };
 
-export const updateEventAPI = async (data) => {
+export const updateEventAPI = async (id,data) => {
+  
   try {
-    const res = await axiosUrl.put(ROUTER_API.updateEventURL, data);
+    const res = await axiosUrl.put(ROUTER_API.updateEventURL+id, {
+      clubId: data?.clubId,
+      userId: data?.userId,
+      name: data?.name,
+      description: data?.description,
+      banner: data?.banner,
+      startDate: data?.startDate,
+      endDate: data?.endDate,
+      location: data?.location,
+      eventTypeId: data?.eventTypeId
+    });
+    ;
     return res;
   } catch (error) {
     return error;

@@ -18,36 +18,43 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { getBase64 } from "@/app/_utils/functions/functions";
 
 export default function EditEventDialog({ dataRow }) {
   const dispatch = useDispatch();
   const isGetEventList = useSelector((state) => state.admin.isGetEventList);
   const eventTypeList = useSelector((state) => state.setting.eventTypeList);
   const defaultData = {
-    eventID: "",
+    eventId: "",
     name: "",
-    email: "",
-    approveStatus: 1,
-    startDate: "",
+    userId: "",
+    club: {
+clubId:'',
+clubName:''
+    },
+    startDate: '',
     endDate: "",
-    address: "",
     location: "",
-    clubName: "",
-    setting: "",
-    status: true,
+    eventTypeId: "",
+    description: "a",
+    banner: "",
+    setting: {
+      settingId: "",
+      name: "",
+    },
   };
 
   const [data, setData] = useState(defaultData);
   useEffect(() => {
     setData(dataRow);
   }, [dataRow]);
-
-  const onSubmit = () => {
-    console.log(data);
-    toast("submit");
+ 
+  const handleUploadImage = async (e) => {
+    const file = await getBase64(e.target.files[0]);
+    setData((prev) => ({ ...prev, banner: file }));
   };
   const updateEvent = async () => {
-    const res = await updateEventAPI(data);
+    const res = await updateEventAPI(data?.eventId,data);
     if (res.status == 200) {
       toast("Cập nhật thành công!");
       dispatch(setIsGetEventList(!isGetEventList));
@@ -125,18 +132,21 @@ export default function EditEventDialog({ dataRow }) {
             }
           />
 
-          <div className="flex flex-col items-start gap-y-3">
+<div className="flex flex-col items-start gap-y-3">
             <Label htmlFor="clubCategoryId" className="">
               Loại Sự Kiện:
             </Label>
             <Select
               className="border-b"
+              value={JSON.stringify(data?.setting)}
               onValueChange={(value) =>
                 setData((pre) => ({
                   ...pre,
-                  setting: value?.name,
-                  eventTypeId: value?.settingId,
+                  
+                  setting: Boolean(value)? JSON.parse(value) :defaultData?.setting,
+                  eventTypeId:Boolean(value)? JSON.parse(value)?.settingId:defaultData?.eventTypeId,
                 }))
+                
               }>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Chọn Loại Sự Kiện" />
@@ -145,7 +155,7 @@ export default function EditEventDialog({ dataRow }) {
                 <SelectGroup>
                   <SelectLabel>Loại Sự Kiện</SelectLabel>
                   {eventTypeList?.map((item, index) => (
-                    <SelectItem value={item} key={index}>
+                    <SelectItem value={JSON.stringify(item)} key={index}>
                       {item?.name}
                     </SelectItem>
                   ))}
@@ -153,37 +163,19 @@ export default function EditEventDialog({ dataRow }) {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-col items-start gap-y-3 col-span-2">
-            <Label htmlFor="role" className="">
-              Trạng Thái:
-            </Label>
-            <RadioGroup
-              defaultValue="Not Yet"
-              className="flex justify-between items-center w-full px-4"
-              onValueChange={(value) =>
-                setData((pre) => ({
-                  ...pre,
-                  status: value,
-                }))
-              }>
-              <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="Not Yet" id="status_1" />
-                <Label htmlFor="status_1">Chưa diễn ra</Label>
-              </div>
-              <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="Happening" id="status_2" />
-                <Label htmlFor="status_2">Đang diễn ra</Label>
-              </div>
-              <div className="flex items-center gap-x-3">
-                <RadioGroupItem value="Ended" id="status_2" />
-                <Label htmlFor="status_2">Đã kết thúc</Label>
-              </div>
-            </RadioGroup>
-          </div>
+          <FormItem
+            name="Banner:"
+            id="banner"
+            className="col-span-2"
+            value={data?.banner}
+            placeHolder="Banner"
+            type="file"
+            onChange={(e) => handleUploadImage(e)}
+          />
         </form>
         <div
           className="w-full flex items-center justify-center mt-auto"
-          onClick={onSubmit}>
+          onClick={updateEvent}>
           <Button className="bg-blue-600 hover:bg-blue-500 w-1/2">
             Cập nhật
           </Button>
